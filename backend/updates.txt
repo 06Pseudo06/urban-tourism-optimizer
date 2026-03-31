@@ -1,0 +1,79 @@
+### Backend Progress Update (Day 1 – Core Setup + Authentication)
+
+Today, I completed the foundational backend setup and implemented the authentication system.
+
+#### 1. Core Setup
+
+* Initialized a Node.js project with Express.
+* Structured the project into modular layers: `controllers`, `services`, `models`, `routes`, `middleware`, and `config`.
+* Configured environment variables using `.env` for secure handling of sensitive data (PORT, DB URI, JWT secret).
+* Established MongoDB connection using Mongoose.
+
+This ensures the backend is scalable, maintainable, and cleanly organized.
+
+---
+
+#### 2. Routing & Server Flow
+
+* Created a centralized `app.js` to manage middleware and routes.
+* `server.js` acts as the entry point (loads env → connects DB → starts server).
+* Verified routing with a test endpoint.
+
+Flow:
+Client → Route → Controller → Service → Model → Database → Response
+
+---
+
+#### 3. Authentication System (Core Feature)
+
+Implemented complete user authentication:
+
+##### Register:
+
+* Accepts user data (name, email, password)
+* Hashes password using bcrypt
+* Stores user securely in database
+
+##### Login:
+
+* Verifies email and password
+* Generates JWT token for authentication
+
+---
+
+#### 4. Security Layer
+
+* Implemented JWT-based authentication middleware (`protect`)
+* Middleware:
+
+  * Extracts token from request header
+  * Verifies token
+  * Attaches user to request (`req.user`)
+  * Blocks unauthorized access
+
+---
+
+#### 5. Protected Routes
+
+* Created a protected endpoint (`/api/user/profile`)
+* Only accessible with valid token
+* Confirms authentication pipeline is working end-to-end
+
+---
+
+#### Current Status
+
+* Server running and stable
+* Database connected
+* Authentication working (register + login)
+* Route protection implemented
+
+---
+
+#### Next Steps
+
+* Build core domain module (Places API)
+* Add filtering and querying logic
+* Implement user-specific features (bookmarks, itineraries)
+
+---
