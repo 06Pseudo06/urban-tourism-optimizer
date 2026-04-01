@@ -1,22 +1,18 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Home from "./pages/Home";
-import Planner from "./pages/Planner";
-import HeatmapPage from "./pages/HeatmapPage";
-import Transport from "./pages/Transport";
-import Dashboard from "./pages/Dashboard";
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from './assets/vite.svg'
+import heroImg from './assets/hero.png'
+import './App.css'
+import { Button } from "@/components/ui/button"
+import Hero from "./components/ui/custom/Hero.jsx"
 
-export default function App() {
+function App() {
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/planner" element={<Planner />} />
-        <Route path="/heatmap" element={<HeatmapPage />} />
-        <Route path="/transport" element={<Transport />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
-    </BrowserRouter>
-  );
+    <>
+     {/* hero-section */}
+     <Hero/>
+    </>
+  )
 }
+
+export default App
