@@ -57,6 +57,7 @@ Implemented a complete user authentication pipeline:
 
 ---
 
+<<<<<<< Updated upstream
 ## Current Status
 - [x] Server running and stable
 - [x] Database connected (MongoDB)
@@ -69,3 +70,22 @@ Implemented a complete user authentication pipeline:
 - [ ] Build core domain module (Places API)
 - [ ] Add filtering and querying logic
 - [ ] Implement user-specific features (bookmarks, itineraries)
+=======
+#### Current Status
+
+* Server running and stable
+* Database connected
+* Authentication working (register + login)
+* Route protection implemented
+* **Phase 1 complete:** Setup `/generate-itinerary` mock endpoint with dummy JSON to unblock frontend.
+
+---
+
+#### Next Steps
+
+* **Phase 2 (Days 3-4):** Import and connect Integration module (`getPlaces`, `getRoutes`) into the `/generate-itinerary` controller.
+* Build core domain module (Places API) and refine formatting logic.
+* Add filtering and user-specific features (bookmarks, saved itineraries).
+
+---
+>>>>>>> Stashed changes
