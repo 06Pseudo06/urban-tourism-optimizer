@@ -24,6 +24,6 @@ createRoot(document.getElementById('root')).render(
 
   <StrictMode>
    <Header/>
-   <RouterProvider router={route}/>
-  </StrictMode>,
+  <RouterProvider router={route}/>   {/* //will redirect to the component based on the path*/}
+  </StrictMode>, 
 )
