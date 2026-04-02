@@ -55,9 +55,8 @@ Implemented a complete user authentication pipeline:
 * Verified that it is **only** accessible with a valid Bearer token.
 * Confirmed the authentication pipeline is working end-to-end.
 
----
-
-<<<<<<< Updated upstream
+--- 
+ 
 ## Current Status
 - [x] Server running and stable
 - [x] Database connected (MongoDB)
@@ -70,8 +69,7 @@ Implemented a complete user authentication pipeline:
 - [ ] Build core domain module (Places API)
 - [ ] Add filtering and querying logic
 - [ ] Implement user-specific features (bookmarks, itineraries)
-=======
-#### Current Status
+#### Current Status 
 
 * Server running and stable
 * Database connected
@@ -88,4 +86,4 @@ Implemented a complete user authentication pipeline:
 * Add filtering and user-specific features (bookmarks, saved itineraries).
 
 ---
->>>>>>> Stashed changes
+ 
