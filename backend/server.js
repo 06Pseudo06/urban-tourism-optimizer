@@ -7,7 +7,7 @@ const app = require('./src/app');
 const connectDB = require('./src/config/db');
 
 // Connect to database
-connectDB();
+//connectDB();
 
 // Define port
 const PORT = process.env.PORT || 5000;
