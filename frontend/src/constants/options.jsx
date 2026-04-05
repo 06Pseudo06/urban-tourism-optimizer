@@ -1,4 +1,4 @@
-export const SelectTravelsList = [
+export const SelectTravelersList = [
     {
         id:1,
         title:'just me',
