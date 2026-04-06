@@ -1,13 +1,13 @@
-const dotenv = require('dotenv');
+//const dotenv = require('dotenv').config();
 
 // Load environment variables
-dotenv.config();
-
+//dotenv.config();
+require('dotenv').config();
 const app = require('./src/app');
 const connectDB = require('./src/config/db');
 
 // Connect to database
-connectDB();
+//connectDB();
 
 // Define port
 const PORT = process.env.PORT || 5000;
