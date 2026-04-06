@@ -1,16 +1,22 @@
-import React, { use } from 'react'
-import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
+import React from 'react'
 import { SelectBudget} from '../constants/options'
 import { SelectTravelersList } from '../constants/options'
 import { Button } from "@/components/ui/button"
 import { useEffect } from 'react';
 import { Form } from 'react-router-dom'
 
-function Createtrip() {
-  const [place, setPlace] = React.useState(null)
+function Createtrip() { 
 
-  // trying to store the form data in a state variable called Formdata, which is an array. The setFormdata function will be used to update this state variable when the user fills out the form.
-  const[Formdata, setFormdata] = React.useState([])
+  // trying to store the form data in a state variable called Formdata, which is an object. The setFormdata function will be used to update this state variable when the user fills out the form.
+  const[Formdata, setFormdata] = React.useState({})
+  
+  // State for handling API request status and response
+  const [loading, setLoading] = React.useState(false)
+  const [tripData, setTripData] = React.useState(null)
+
+  // NEW: states for Geoapify-based autocomplete
+  const [query, setQuery] = React.useState("")
+  const [suggestions, setSuggestions] = React.useState([])
 
   // handleInputChange function is defined to update the Formdata state variable whenever there is a change in the form inputs. It takes the name of the input field and its value as parameters and updates the Formdata state accordingly.
   const handleInputChange = (name,value)=>{
@@ -26,17 +32,53 @@ function Createtrip() {
   }, [Formdata])
 
 
-     // This function will be called when the user clicks the "Generate-Trip" button. It can be used to process the form data and generate a personalized itinerary based on the user's preferences. The implementation of this function will depend on how you want to handle the trip generation logic, such as making API calls to a backend service or using a local algorithm to create the itinerary.
-  const OnGenerateTrip=() => {
-    if(FormData?.duration >5 &&!FormData?.travelType || !FormData?.location || !FormData?.travelCompanions){
-      return;
-    }
+     // This function will be called when the user clicks the "Generate-Trip" button. It handles making the API call to the backend.
+const OnGenerateTrip = async () => {
+
+  console.log("FINAL FORM DATA:", Formdata);  //debug 
+
+  // Basic validation
+  if (
+  !Formdata?.location?.name ||
+  !Formdata?.duration ||
+  !Formdata?.travelType ||
+  !Formdata?.travelCompanions
+  ) {
+    alert("Please fill out all the fields before generating the trip.");
+    return;
+  }
+
+    setLoading(true);
+    setTripData(null);
     console.log("Generating trip with the following preferences:", Formdata);
-    // Add your trip generation logic here, such as making an API call to a backend service or using a local algorithm to create the itinerary based on the Formdata.
+
+    try {
+      const response = await fetch("http://localhost:5000/api/itinerary/generate-itinerary", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          city: Formdata.location?.name || 'Unknown City',
+          duration: Number(Formdata.duration),
+          interests: [Formdata.travelType, Formdata.travelCompanions].filter(Boolean)
+        }),
+      });
+
+      const data = await response.json();
+      setTripData(data);
+      console.log("Trip data generated:", data);
+    } catch (error) {
+      console.error("Error generating trip:", error);
+      alert("Failed to generate trip. Please make sure the backend is running.");
+    } finally {
+      setLoading(false);
+    }
   }
 
 
-  // The component returns a JSX structure that represents the form for creating a trip. It includes input fields for the destination, duration of stay, type of travel, and travel companions. The GooglePlacesAutocomplete component is used for the destination input, allowing users to search for places using the Google Places API. The options for the type of travel and travel companions are rendered using the SelectBudget and SelectTravelersList arrays, respectively. Finally, there is a button to generate the trip based on the provided information.
+  // The component returns a JSX structure that represents the form for creating a trip. It includes input fields for the destination, duration of stay, type of travel, and travel companions.
+  // GooglePlacesAutocomplete has been removed and replaced with custom Geoapify-based input calling backend.
   return (
     <div className='sm:px-10 md:px-32 lg:px-56 xl:p-10 p-5 mt-10' text-center>
       <h2 className='font-bold text-3xl'>Tell us your travel preferences🏕️🌴</h2>
@@ -47,22 +89,75 @@ function Createtrip() {
         <div>
           <h2 className='text-xl my-3 font-medium'>Where do you want to go?`</h2>
 
-          {/* key for using google places autocomplete API, stored in .env.local file and accessed using import.meta.env */}
+          {/* Replaced Google autocomplete with custom backend-driven search */}
+<div className="relative">
+          <input
+            type="text"
+            placeholder="Enter destination"
+            value={query}
+            onChange={async (e) => {
+              const value = e.target.value;
+              setQuery(value);
 
-          <GooglePlacesAutocomplete
-            apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY} //API KEY from .env.local
-            selectProps={{
-              place,
-              onChange: v => { setPlace(v); handleInputChange('location', v) } //trying to store value in place variable and log it to console
+              if (!value) {
+                setSuggestions([]);
+                return;
+              }
+
+              try {
+                const res = await fetch("http://localhost:5000/api/places/search", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ query: value }),
+                });
+
+                const data = await res.json();
+                setSuggestions(data);
+              } catch (err) {
+                console.error("Error fetching places:", err);
+              }
             }}
+            className='border border-gray-300 rounded-md p-2 w-full'
           />
+
+          {/* Suggestions dropdown */}
+          {suggestions.length > 0 && (
+          <ul className="border rounded-md mt-2 bg-white shadow-md absolute z-50 w-full max-h-60 overflow-y-auto">
+            {suggestions.map((item, index) => (
+<li
+  key={index}
+  className="p-2 hover:bg-gray-200 cursor-pointer"
+  onMouseDown={() => {   // 🔥 FIXED HERE
+    const selectedName =
+      item.name || item.formatted || item.properties?.formatted;
+
+    console.log("SELECTED PLACE:", selectedName);
+
+    if (!selectedName) return;
+
+    setQuery(selectedName);
+
+    // FIX: force correct structure
+    handleInputChange('location', { name: selectedName });
+
+    setSuggestions([]);
+  }}
+>
+  {item.name || item.formatted || item.properties?.formatted}
+</li>
+            ))}
+          </ul>
+          )}
+</div>
         </div>
 
         <div>
           <h2 className='text-xl my-3 font-medium'>How long do you want to stay?</h2>
           <input type="number" placeholder='Enter number of days' className='border border-gray-300 rounded-md p-2 w-full'
           
-          onChange={(e) => handleInputChange('duration', e.target.value)}
+          onChange={(e) => handleInputChange('duration', Number(e.target.value))}
           
           />
           {/* //trying to store value in duration variable and log it to console */}
@@ -71,47 +166,67 @@ function Createtrip() {
           
         </div>
 
-        <div>
-          <h2 className='text-xl my-3 font-medium'>What type of travel are you looking for?</h2>
-          <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hover:shadow-lg'>
-            {SelectBudget.map((item, index) => (
-              <div
-                key={index}
-                // onclick event handler is added to each travel type option. When a user clicks on an option, the handleInputChange function is called with the name 'travelType' and the value of the selected option's title. This allows the selected travel type to be stored in the Formdata state variable, which can then be used for further processing, such as generating a personalized itinerary based on the user's preferences.
-                onClick={() => handleInputChange('travelType', item.title)}
-                className="border rounded-lg p-4 cursor-pointer hover:shadow-md"
-              >
-                <h2 className="text-3xl">{item.icon}</h2>
-                <h2 className="font-bold text-lg">{item.title}</h2>
-                <p className="text-gray-500">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+<div>
+  <h2 className='text-xl my-3 font-medium'>What type of travel are you looking for?</h2>
+  <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hover:shadow-lg'>
+    {SelectBudget.map((item, index) => (
+      <div
+        key={index}
+        // onclick event handler is added to each travel type option. When a user clicks on an option, the handleInputChange function is called with the name 'travelType' and the value of the selected option's title. This allows the selected travel type to be stored in the Formdata state variable, which can then be used for further processing, such as generating a personalized itinerary based on the user's preferences.
+        onClick={() => handleInputChange('travelType', item.title)}
+        className={`border rounded-lg p-4 cursor-pointer hover:shadow-md transition-all duration-200 ${
+          Formdata.travelType === item.title
+            ? "border-black bg-gray-200 scale-105"
+            : ""
+        }`}
+      >
+        <h2 className="text-3xl">{item.icon}</h2>
+        <h2 className="font-bold text-lg">{item.title}</h2>
+        <p className="text-gray-500">{item.desc}</p>
+      </div>
+    ))}
+  </div>
+</div>
 
 
-        <div>
-          <h2 className='text-xl my-3 font-medium'>With whom are you planning to travel?</h2>
-          <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
-            {SelectTravelersList.map((item, index) => (
-              <div
-                key={index}
+<div>
+  <h2 className='text-xl my-3 font-medium'>With whom are you planning to travel?</h2>
+  <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+    {SelectTravelersList.map((item, index) => (
+      <div
+        key={index}
 
-                // /onclick event handler is added to each travel companion option. When a user clicks on an option, the handleInputChange function is called with the name 'travelCompanions' and the value of the selected option's title. This allows the selected travel companions to be stored in the Formdata state variable, which can then be used for further processing, such as generating a personalized itinerary based on the user's preferences.
-                onClick={() => handleInputChange('travelCompanions', item.title)}
-                className="border rounded-lg p-4 cursor-pointer hover:shadow-md"
-              >
-                <h2 className="text-3xl">{item.icon}</h2>
-                <h2 className="font-bold text-lg">{item.title}</h2>
-                <p className="text-gray-500">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        // /onclick event handler is added to each travel companion option. When a user clicks on an option, the handleInputChange function is called with the name 'travelCompanions' and the value of the selected option's title. This allows the selected travel companions to be stored in the Formdata state variable, which can then be used for further processing, such as generating a personalized itinerary based on the user's preferences.
+        onClick={() => handleInputChange('travelCompanions', item.title)}
+        className={`border rounded-lg p-4 cursor-pointer hover:shadow-md transition-all duration-200 ${
+          Formdata.travelCompanions === item.title
+            ? "border-black bg-gray-200 scale-105"
+            : ""
+        }`}
+      >
+        <h2 className="text-3xl">{item.icon}</h2>
+        <h2 className="font-bold text-lg">{item.title}</h2>
+        <p className="text-gray-500">{item.desc}</p>
+      </div>
+    ))}
+  </div>
+</div>
 
         <div className='my-10 justify-end flex '>
-          <Button>Generate-Trip</Button>
+          <Button onClick={OnGenerateTrip} disabled={loading}>
+            {loading ? "Generating..." : "Generate-Trip"}
+          </Button>
         </div>
+
+        {/* Displaying generated trip data from the API */}
+        {tripData && (
+          <div className='mt-10 p-5 border rounded-lg shadow-sm bg-gray-50 overflow-hidden'>
+            <h3 className='text-2xl font-bold mb-4'>Your Generated Itinerary Data</h3>
+            <pre className='bg-gray-800 text-white p-4 rounded-md overflow-auto whitespace-pre-wrap'>
+              {JSON.stringify(tripData, null, 2)}
+            </pre>
+          </div>
+        )}
       </div>
     </div>
   )
