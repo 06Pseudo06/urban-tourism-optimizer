@@ -4,6 +4,7 @@ import { SelectTravelersList } from '../constants/options'
 import { Button } from "@/components/ui/button"
 import { useEffect } from 'react';
 import { Form } from 'react-router-dom'
+import ItineraryDisplay from '../components/ItineraryDisplay'
 
 function Createtrip() { 
 
@@ -219,14 +220,7 @@ const OnGenerateTrip = async () => {
         </div>
 
         {/* Displaying generated trip data from the API */}
-        {tripData && (
-          <div className='mt-10 p-5 border rounded-lg shadow-sm bg-gray-50 overflow-hidden'>
-            <h3 className='text-2xl font-bold mb-4'>Your Generated Itinerary Data</h3>
-            <pre className='bg-gray-800 text-white p-4 rounded-md overflow-auto whitespace-pre-wrap'>
-              {JSON.stringify(tripData, null, 2)}
-            </pre>
-          </div>
-        )}
+        {tripData && <ItineraryDisplay tripData={tripData} />}
       </div>
     </div>
   )
