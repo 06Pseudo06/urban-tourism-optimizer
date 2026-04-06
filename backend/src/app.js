@@ -4,8 +4,7 @@ const testRoutes = require('./routes/test.routes');
 const authRoutes = require('./routes/auth.routes');
 const userRoutes = require('./routes/user.routes');
 const itineraryRoutes = require('./routes/itinerary.routes');
-
-
+const placesRoutes = require('./routes/places.routes');
 
 const app = express();
 
@@ -20,7 +19,7 @@ app.use('/api/user', userRoutes);
 
 app.use('/api/itinerary', itineraryRoutes);
 
-
+app.use('/api/places', placesRoutes);
 
 app.get('/', (req, res) => {
   res.send('API is running');
