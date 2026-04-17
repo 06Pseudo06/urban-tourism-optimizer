@@ -78,11 +78,18 @@ const HeroInput = ({ onSubmit }) => {
   };
   
   const submitForm = (e) => {
-    e.preventDefault();
-    if (validateStep(4)) {
-       onSubmit(formData);
-    }
-  };
+  e.preventDefault();
+  if (!validateStep(4)) return;
+
+  // Strip empty strings and undefined values
+  const cleanPayload = Object.fromEntries(
+    Object.entries(formData).filter(([, v]) => v !== '' && v !== null && v !== undefined)
+  );
+  // Ensure interests is always an array
+  cleanPayload.interests = Array.isArray(formData.interests) ? formData.interests : [];
+  
+  onSubmit(cleanPayload);
+}; 
 
   const toggleInterest = (i) => {
     setFormData(prev => ({

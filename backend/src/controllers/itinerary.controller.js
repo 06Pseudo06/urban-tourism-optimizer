@@ -171,13 +171,11 @@ exports.generateItinerary = async (req, res) => {
 
     // ── Geocode destination ──
     const geoapifyKey = process.env.GEOAPIFY_API_KEY;
-    const geocodeRes = await fetch(
-      `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(destination)}&format=json&apiKey=${geoapifyKey}`
-    );
-    const geocodeData = await geocodeRes.json();
-    if (!geocodeData.results?.length) {
-      return res.status(404).json({ success: false, message: 'City not found' });
-    }
+const { safeFetch } = require('../utils/safeFetch');
+const { ok: geoOk, data: geocodeData } = await safeFetch(`https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(destination)}&format=json&apiKey=${geoapifyKey}`);
+if (!geoOk || !geocodeData?.results?.length) {
+  return res.status(404).json({ success: false, message: 'City not found or geocoding API unavailable.' });
+}
 
     const cityData = geocodeData.results[0];
     const placeId = cityData.place_id;
@@ -189,10 +187,11 @@ exports.generateItinerary = async (req, res) => {
     let eLocData = null;
 
     if (start_location) {
-      const sRes = await fetch(
+
+     const { data: sData } = await safeFetch(
         `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(start_location + ' ' + destination)}&format=json&apiKey=${geoapifyKey}`
-      );
-      const sData = await sRes.json();
+      ); 
+
       if (sData.results?.length > 0) {
         const sLocEmbed = await generateEmbedding(`${start_location} starting point`);
         sLocData = {
@@ -249,7 +248,9 @@ exports.generateItinerary = async (req, res) => {
       searchGooglePlacesText(`best local cuisine in ${destination}`, cityLat, cityLon)
     ];
 
-    const results = await Promise.all(queryPromises);
+    const settled = await Promise.allSettled(queryPromises);
+    const results = settled.map(r => r.status === 'fulfilled' ? r.value : null);
+
     const geoapifyRes = results[0];
     const googleTop = results[1] || [];
     const googleLandmarks = results[2] || [];
@@ -346,7 +347,10 @@ exports.generateItinerary = async (req, res) => {
       p.embedding = await generateEmbedding(descStr);
       return p;
     });
-    let allPlaces = await Promise.all(embedPromises);
+    const embedSettled = await Promise.allSettled(embedPromises);
+    let allPlaces = embedSettled
+      .filter(r => r.status === 'fulfilled' && r.value != null)
+      .map(r => r.value);
 
     // ── Quality filter ──
     allPlaces = allPlaces.filter(p => {
@@ -698,8 +702,13 @@ exports.generateItinerary = async (req, res) => {
       message: 'Generated human-like slot-balanced semantic itinerary.'
     });
 
-  } catch (error) {
-    console.error('Itinerary Error:', error);
-    return res.status(500).json({ success: false, message: 'Server error generating slot-based routing.' });
-  }
-};
+} catch (error) {
+  console.error('Itinerary Error:', error);
+  return res.status(500).json({
+    success: false,
+    message: error.message || 'Server error generating itinerary.',
+    ...(process.env.NODE_ENV === 'development' ? { stack: error.stack } : {})
+  });
+}
+
+}

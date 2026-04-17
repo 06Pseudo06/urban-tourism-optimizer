@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 
 const loadGoogleMapsScript = (apiKey) => {
   return new Promise((resolve, reject) => {
@@ -7,7 +7,6 @@ const loadGoogleMapsScript = (apiKey) => {
       return;
     }
 
-    // Prevent duplicate script loading
     if (document.querySelector('script[src*="maps.googleapis.com"]')) {
       resolve();
       return;
@@ -30,12 +29,22 @@ const MapPanel = ({ places }) => {
   const polylineRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  // ✅ Normalize + validate places ONCE
+  const safePlaces = useMemo(() => {
+    return Array.isArray(places)
+      ? places.filter(
+          (p) =>
+            typeof p?.lat === "number" &&
+            typeof p?.lng === "number"
+        )
+      : [];
+  }, [places]);
+
   useEffect(() => {
     const initMap = async () => {
       try {
         const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
-        // API key safety
         if (!apiKey) {
           console.error("Google Maps API key missing");
           return;
@@ -52,42 +61,24 @@ const MapPanel = ({ places }) => {
   }, []);
 
   useEffect(() => {
-    // Strong guard
-    if (
-      !isLoaded ||
-      !mapRef.current ||
-      !Array.isArray(places) ||
-      places.length === 0
-    ) return;
+    // ✅ Strong guard using safePlaces
+    if (!isLoaded || !mapRef.current || safePlaces.length === 0) return;
 
-    // Safe center (avoid 0,0 issue)
     const center = {
-      lat: typeof places[0]?.lat === "number" ? places[0].lat : 20,
-      lng: typeof places[0]?.lng === "number" ? places[0].lng : 78
+      lat: safePlaces[0].lat,
+      lng: safePlaces[0].lng
     };
 
     if (!mapInstance.current) {
       mapInstance.current = new window.google.maps.Map(mapRef.current, {
         center,
         zoom: 12,
-        styles: [
-          {
-            featureType: "poi",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#747474" }]
-          },
-          {
-            featureType: "poi.park",
-            elementType: "geometry.fill",
-            stylers: [{ color: "#a5b076" }]
-          }
-        ],
         disableDefaultUI: true,
         zoomControl: true,
       });
     }
 
-    // Clear old markers
+    // Cleanup previous
     markersRef.current.forEach(m => m.setMap(null));
     markersRef.current = [];
 
@@ -99,13 +90,7 @@ const MapPanel = ({ places }) => {
     const bounds = new window.google.maps.LatLngBounds();
     const pathCoords = [];
 
-    places.forEach((place, idx) => {
-      // Strict lat/lng validation
-      if (
-        typeof place.lat !== "number" ||
-        typeof place.lng !== "number"
-      ) return;
-
+    safePlaces.forEach((place, idx) => {
       const pos = { lat: place.lat, lng: place.lng };
       pathCoords.push(pos);
       bounds.extend(pos);
@@ -118,21 +103,12 @@ const MapPanel = ({ places }) => {
           text: String(idx + 1),
           color: 'white',
           fontWeight: 'bold'
-        },
-        icon: {
-          path: window.google.maps.SymbolPath.CIRCLE,
-          fillColor: '#2563eb',
-          fillOpacity: 1,
-          strokeColor: '#ffffff',
-          strokeWeight: 2,
-          scale: 12
         }
       });
 
       markersRef.current.push(marker);
     });
 
-    // Draw route line
     if (pathCoords.length > 1) {
       polylineRef.current = new window.google.maps.Polyline({
         path: pathCoords,
@@ -142,34 +118,28 @@ const MapPanel = ({ places }) => {
         strokeWeight: 4,
         map: mapInstance.current
       });
-    }
 
-    // Fit bounds safely
-    if (pathCoords.length > 1) {
       mapInstance.current.fitBounds(bounds);
-
-      const listener = window.google.maps.event.addListener(
-        mapInstance.current,
-        "idle",
-        function () {
-          if (mapInstance.current.getZoom() > 15) {
-            mapInstance.current.setZoom(15);
-          }
-          window.google.maps.event.removeListener(listener);
-        }
-      );
-    } else if (pathCoords.length === 1) {
+    } else {
       mapInstance.current.setCenter(pathCoords[0]);
       mapInstance.current.setZoom(14);
     }
 
-    // Cleanup on re-render
     return () => {
       markersRef.current.forEach(m => m.setMap(null));
       if (polylineRef.current) polylineRef.current.setMap(null);
     };
 
-  }, [isLoaded, places]);
+  }, [isLoaded, safePlaces]);
+
+  // ✅ UX FIX: show message instead of blank/broken map
+  if (isLoaded && safePlaces.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-full text-slate-400 text-sm">
+        No location data available for map.
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-full relative">
@@ -186,4 +156,4 @@ const MapPanel = ({ places }) => {
   );
 };
 
-export default MapPanel;
+export default MapPanel; 

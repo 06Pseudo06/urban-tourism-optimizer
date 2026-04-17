@@ -118,23 +118,43 @@ const PlaceCard = ({ place, index, isLast }) => {
 };
 
 const ItineraryDisplay = ({ itineraryData }) => {
-  if (!itineraryData?.itinerary) return null;
+  if (!itineraryData) return null;
+
+  // ✅ normalize ONCE
+  const itinerary = Array.isArray(itineraryData?.itinerary)
+    ? itineraryData.itinerary
+    : [];
+
+  const destination = itineraryData?.destination ?? 'Unknown';
+  const duration = itineraryData?.duration ?? itinerary.length;
+  const travelType = itineraryData?.travel_type ?? 'travel';
+  const budget = itineraryData?.budget ?? 'mid';
+
+  // ✅ empty guard
+  if (itinerary.length === 0) {
+    return (
+      <div className="text-center py-20 text-slate-500">
+        <p className="text-lg font-semibold">No itinerary data available.</p>
+        <p className="text-sm mt-2">Try adjusting your destination or dates.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full mx-auto py-4 px-2 sm:px-6">
 
       <div className="mb-12 text-center">
          <h2 className="text-4xl font-black mb-3">
-           Your {itineraryData?.duration || 0}-Day Trip to {itineraryData?.destination || 'Unknown'}
+           Your {duration}-Day Trip to {destination}
          </h2>
          <p className="text-slate-500">
-           Optimized for {itineraryData?.travel_type || 'travel'} on a {itineraryData?.budget || 'mid'} budget.
+           Optimized for {travelType} on a {budget} budget.
          </p>
       </div>
 
       <div className="space-y-16">
-        {itineraryData.itinerary.map((dayPlan, dIdx) => {
-          const places = dayPlan?.places || [];
+        {itinerary.map((dayPlan, dIdx) => {
+          const places = Array.isArray(dayPlan?.places) ? dayPlan.places : [];
 
           return (
             <div key={dayPlan?.day || dIdx}>
@@ -142,9 +162,9 @@ const ItineraryDisplay = ({ itineraryData }) => {
               <div className="sticky top-4 z-20 mx-auto max-w-4xl bg-white py-3.5 mb-8 rounded-2xl px-6 flex justify-between items-center shadow">
                 <h3 className="font-black text-2xl flex items-center gap-3">
                    <span className="bg-blue-600 text-white w-10 h-10 rounded-xl flex items-center justify-center">
-                     {dayPlan?.day}
+                     {dayPlan?.day || dIdx + 1}
                    </span>
-                   Day {dayPlan?.day}
+                   Day {dayPlan?.day || dIdx + 1}
                 </h3>
                 <WeatherBadge weather={dayPlan?.weather} />
               </div>
@@ -168,7 +188,7 @@ const ItineraryDisplay = ({ itineraryData }) => {
                 )}
               </div>
 
-              {dIdx !== itineraryData.itinerary.length - 1 && (
+              {dIdx !== itinerary.length - 1 && (
                 <div className="max-w-4xl mx-auto mt-12 mb-4 border-b"></div>
               )}
             </div>
@@ -179,4 +199,4 @@ const ItineraryDisplay = ({ itineraryData }) => {
   );
 };
 
-export default ItineraryDisplay;
+export default ItineraryDisplay; 

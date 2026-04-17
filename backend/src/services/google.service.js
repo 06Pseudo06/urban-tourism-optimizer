@@ -1,6 +1,10 @@
 const stringSimilarity = require('string-similarity');
 const PlaceCache = require('../models/placeCache.model');
+const { safeFetch } = require('../utils/safeFetch');
 
+/**
+ * Helper to calculate Haversine distance
+ */
 const getDistanceKm = (lat1, lon1, lat2, lon2) => {
   const R = 6371;
   const dLat = (lat2 - lat1) * (Math.PI / 180);
@@ -28,7 +32,7 @@ const searchGooglePlacesText = async (textQuery, lat, lon) => {
   try {
     await delay(100);
 
-    const response = await fetch(url, {
+    const { ok, data } = await safeFetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -47,9 +51,8 @@ const searchGooglePlacesText = async (textQuery, lat, lon) => {
       })
     });
 
-    if (!response.ok) return [];
+    if (!ok || !data) return [];
 
-    const data = await response.json();
     const places = data.places || [];
 
     return places.map(p => {
@@ -77,12 +80,13 @@ const searchGooglePlacesText = async (textQuery, lat, lon) => {
       };
     });
 
-  } catch {
+  } catch (error) {
+    console.error("[GoogleService] Search Error:", error.message);
     return [];
   }
 };
 
-/* CURATED MULTI-QUERY SEARCH (KEY UPGRADE) */
+/* CURATED MULTI-QUERY SEARCH */
 
 const searchCuratedPlaces = async (destination, lat, lon) => {
   const queries = [
@@ -102,7 +106,7 @@ const searchCuratedPlaces = async (destination, lat, lon) => {
     allResults.push(...results);
   }
 
-  // Deduplicate
+  // Deduplicate by lowercase display name
   const unique = [];
   const seen = new Set();
 
@@ -153,6 +157,7 @@ const enrichPlaceWithGoogle = async (geoapifyPlace) => {
       );
 
       const dist = getDistanceKm(lat, lon, p.location.lat, p.location.lng);
+      // Ensure the Google place is within 5km of the Geoapify coordinate
       if (dist > 5) continue;
 
       const score = similarity * 0.7 + (1 - dist / 5) * 0.3;
@@ -183,12 +188,13 @@ const enrichPlaceWithGoogle = async (geoapifyPlace) => {
 
     return enriched;
 
-  } catch {
+  } catch (error) {
+    console.error("[GoogleService] Enrichment Error:", error.message);
     return null;
   }
 };
 
-/*  DISTANCE MATRIX */
+/* DISTANCE MATRIX */
 
 const getDistanceMatrix = async (origins, destinations) => {
   const apiKey = process.env.GOOGLE_MAPS_API_KEY;
@@ -200,10 +206,12 @@ const getDistanceMatrix = async (origins, destinations) => {
   const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${originStr}&destinations=${destStr}&key=${apiKey}`;
 
   try {
-    const res = await fetch(url);
-    const data = await res.json();
+    const { ok, data } = await safeFetch(url);
 
-    if (data.status !== "OK") return null;
+    if (!ok || !data || data.status !== "OK") {
+      console.warn("[GoogleService] Distance Matrix API status not OK or no data.");
+      return null;
+    }
 
     return data.rows.map(row =>
       row.elements.map(el => ({
@@ -212,13 +220,11 @@ const getDistanceMatrix = async (origins, destinations) => {
       }))
     );
 
-  } catch {
+  } catch (error) {
+    console.error("[GoogleService] Distance Matrix Error:", error.message);
     return null;
   }
-};
-
-/* EXPORTS */
-
+}; 
 
 module.exports = { 
   searchGooglePlacesText, 
@@ -226,4 +232,4 @@ module.exports = {
   filterHighQualityPlaces,
   enrichPlaceWithGoogle, 
   getDistanceMatrix
-}; 
+};

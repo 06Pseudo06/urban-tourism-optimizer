@@ -1,6 +1,9 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
+const { validateEnv } = require('./src/utils/validateEnv');
+validateEnv(); // Warn about missing keys at startup
+
 const app = require('./src/app');
 const connectDB = require('./src/config/db');
 

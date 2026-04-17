@@ -5,6 +5,7 @@ import HeroInput from '../components/ui/custom/HeroInput';
 import ItineraryDisplay from '../components/ui/custom/ItineraryDisplay';
 import MapPanel from '../components/ui/custom/MapPanel';
 import Page3DBackground from '@/components/custom/Page3DBackground';
+import { safeApiFetch } from '../config/api';
 
 const GlobeCanvas = lazy(() => import("@/components/custom/GlobeCanvas"));
 
@@ -12,10 +13,9 @@ function Createtrip() {
   const [itineraryData, setItineraryData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [showMap, setShowMap] = useState(false);
+  const [showMap, setShowMap] = useState(false); 
 
-  // ✅ FIXED: correct lat/lng usage
-  const routeCoordinates = useMemo(() => {
+  const routeCoordinates = useMemo(() => { 
     if (!itineraryData?.itinerary) return [];
     return itineraryData.itinerary.flatMap((day) => {
       const places = day.places || [];
@@ -37,7 +37,6 @@ function Createtrip() {
     });
   }, [itineraryData]);
 
-  // ✅ FIXED: correct lat/lng usage
   const globeFocus = useMemo(() => {
     const firstPlace = itineraryData?.itinerary?.[0]?.places?.[0];
     if (
@@ -60,7 +59,7 @@ function Createtrip() {
 
     try {
       const cleanData = Object.fromEntries(
-        Object.entries(formData).filter(([k, v]) => v != null && v !== '')
+        Object.entries(formData).filter((entry) => entry[1] != null && entry[1] !== '')
       );
 
       const toISO = (dateStr) => {
@@ -72,35 +71,13 @@ function Createtrip() {
       if (cleanData.start_date) cleanData.start_date = toISO(cleanData.start_date);
       if (cleanData.end_date) cleanData.end_date = toISO(cleanData.end_date);
 
-      // ✅ SAFE API CALL
-      const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
-
-      const res = await fetch(`${BASE_URL}/itinerary/generate-itinerary`, {
+      const data = await safeApiFetch('/api/itinerary/generate-itinerary', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(cleanData)
+        body: JSON.stringify(cleanData),
       });
 
-      const text = await res.text();
-      console.log("API RAW RESPONSE:", text);
-
-      if (!text) {
-        throw new Error("Server returned empty response");
-      }
-
-      if (!res.ok) {
-        throw new Error(`Server error: ${res.status}`);
-      }
-
-      let data;
-      try {
-        data = JSON.parse(text);
-      } catch {
-        throw new Error("Invalid JSON from server");
-      }
-
-      if (!data.success || !data.data) {
-        throw new Error(data.message || "Failed to generate itinerary");
+      if (!data?.success || !data?.data) {
+        throw new Error(data?.message || 'Failed to generate itinerary');
       }
 
       setItineraryData(data.data);
@@ -155,7 +132,10 @@ function Createtrip() {
           <div className="p-8 mt-12 text-center bg-red-50 text-red-600 rounded-xl max-w-md w-full border border-red-100 mx-auto">
             <h3 className="font-bold mb-2">Oops, something went wrong</h3>
             <p>{error}</p>
-            <button onClick={() => setError(null)} className="mt-6 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+            <button 
+              onClick={() => setError(null)} 
+              className="mt-6 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+            >
               Try Again
             </button>
           </div>
@@ -197,7 +177,6 @@ function Createtrip() {
 
     </div>
   );
-}
+} 
 
-export default Createtrip;
-
+export default Createtrip;  
