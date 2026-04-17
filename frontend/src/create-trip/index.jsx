@@ -168,9 +168,13 @@ function Createtrip() {
       {itineraryData && !isLoading && (
         <div className={`${showMap ? 'w-full md:w-1/2' : 'w-0 hidden'}`}>
           {showMap && (
-            <MapPanel 
-              places={itineraryData?.itinerary?.flatMap(day => day.places) || []} 
-            />
+                <MapPanel 
+                    places={
+                      itineraryData?.itinerary
+                      ?.flatMap(day => Array.isArray(day.places) ? day.places : [])
+                      .filter(Boolean) || []
+                    } 
+                />
           )}
         </div>
       )}
