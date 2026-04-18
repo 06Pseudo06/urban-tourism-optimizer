@@ -9,7 +9,7 @@ export default function Page3DBackground({
   globeClassName = "absolute inset-0 opacity-82",
 }) {
   return (
-    <div className={`absolute inset-0 overflow-hidden ${className}`} aria-hidden>
+    <div className={`fixed inset-0 overflow-hidden -z-10 ${className}`} aria-hidden>
       <Suspense fallback={null}>
         <GlobeCanvas className={globeClassName} particleCount={particleCount} />
       </Suspense>

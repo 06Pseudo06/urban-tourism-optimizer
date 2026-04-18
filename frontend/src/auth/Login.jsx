@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Page3DBackground from "@/visuals/background/Page3DBackground";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -48,9 +47,14 @@ export default function Login() {
   };
 
   return (
-    <section className="relative min-h-[calc(100vh-64px)] flex items-center justify-center px-4 py-10">
-      <Page3DBackground particleCount={650} />
-      <div className="relative z-10 w-full max-w-md rounded-2xl border border-white/20 bg-white/10 p-7 backdrop-blur-xl shadow-2xl shadow-cyan-900/25">
+    <section className="relative flex-1 w-full flex items-center justify-center px-4 py-10 z-0 overflow-hidden">
+      <div className="fixed inset-0 bg-slate-950 -z-10">
+        <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] rounded-full bg-indigo-600/15 blur-[120px]" />
+        <div className="absolute top-[50%] -right-[10%] w-[40%] h-[60%] rounded-full bg-cyan-600/10 blur-[100px]" />
+        <div className="absolute inset-0 bg-slate-950/40" />
+      </div>
+
+      <div className="relative z-10 w-full max-w-md rounded-2xl border border-white/10 bg-slate-900/40 p-8 backdrop-blur-xl shadow-2xl shadow-black/50">
         <h1 className="text-3xl font-bold text-white">Welcome back</h1>
         <p className="mt-1 text-sm text-slate-200">Login to continue planning your trip.</p>
 
@@ -62,7 +66,7 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <input
-            className="w-full rounded-xl border border-white/20 bg-slate-950/45 px-4 py-3 text-white placeholder:text-slate-300/70"
+            className="w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-colors"
             type="email"
             name="email"
             placeholder="Email"
@@ -71,7 +75,7 @@ export default function Login() {
             required
           />
           <input
-            className="w-full rounded-xl border border-white/20 bg-slate-950/45 px-4 py-3 text-white placeholder:text-slate-300/70"
+            className="w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-colors"
             type="password"
             name="password"
             placeholder="Password"
@@ -82,7 +86,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={isLoading}
-            className="hero-gradient-btn w-full rounded-xl px-4 py-3 font-semibold text-white disabled:opacity-60"
+            className="mt-2 w-full rounded-xl bg-indigo-600 hover:bg-indigo-500 transition-colors px-4 py-3 font-medium text-white disabled:opacity-60 shadow-md shadow-indigo-900/20"
           >
             {isLoading ? "Logging in..." : "Log in"}
           </button>
@@ -90,7 +94,7 @@ export default function Login() {
 
         <p className="mt-4 text-sm text-slate-200">
           New here?{" "}
-          <Link to="/sign-in" className="font-semibold text-cyan-300 hover:text-cyan-200">
+          <Link to="/sign-in" className="font-medium text-indigo-400 hover:text-indigo-300 transition-colors">
             Create account
           </Link>
         </p>

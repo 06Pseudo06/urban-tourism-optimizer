@@ -52,7 +52,7 @@ const AnimatedRoutes = () => {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<motion.div key="landing" variants={pageTransition} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3, ease: "easeOut" }}><Header /><Landing /></motion.div>} />
+        <Route path="/" element={<motion.div key="landing" variants={pageTransition} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3, ease: "easeOut" }}><MainLayout><Landing /></MainLayout></motion.div>} />
         <Route path="/create-trip" element={<ProtectedRoute><motion.div key="create-trip" variants={pageTransition} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3, ease: "easeOut" }}><MainLayout><Itinerary /></MainLayout></motion.div></ProtectedRoute>} />
         <Route path="/sign-in" element={<motion.div key="sign-in" variants={pageTransition} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3, ease: "easeOut" }}><MainLayout><SignIn /></MainLayout></motion.div>} />
         <Route path="/login" element={<motion.div key="login" variants={pageTransition} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3, ease: "easeOut" }}><MainLayout><Login /></MainLayout></motion.div>} />

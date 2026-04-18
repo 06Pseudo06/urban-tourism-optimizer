@@ -27,10 +27,10 @@ function Header() {
   };
 
   return (
-    <div className='p-3 shadow-sm flex justify-between items-center px-5 bg-slate-950 text-white border-b border-white/10'>
-        <Link to="/" className='flex items-center gap-2'>
-          <img src="logo.svg" alt="Urban Tourism Optimizer logo" className='h-8 w-auto' />
-          <span className='hidden sm:inline font-semibold tracking-wide'>Urban Tourism Optimizer</span>
+    <header className="sticky top-0 z-50 p-3 flex justify-between items-center px-4 sm:px-8 bg-slate-950/80 backdrop-blur-md text-white border-b border-white/10 shadow-sm transition-all">
+        <Link to="/" className="flex items-center gap-3">
+          <img src="logo.svg" alt="Urban Tourism Optimizer logo" className="h-8 w-auto hover:opacity-90 transition-opacity" />
+          <span className="hidden sm:inline font-bold tracking-wide text-lg bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">Urban Tourism Optimizer</span>
         </Link>
         <div className='flex items-center gap-2'>
           {!isAuthRoute && (
@@ -43,7 +43,7 @@ function Header() {
           ) : (
             <>
               <Link to="/login">
-                <Button size="sm" variant={isAuthRoute ? "outline" : "default"} className="transition-all duration-200">Login</Button>
+                <Button size="sm" variant={isAuthRoute ? "outline" : "default"} className={`transition-all duration-200 ${isAuthRoute ? "border-white/30 text-white bg-transparent hover:bg-white/10" : ""}`}>Login</Button>
               </Link>
               <Link to="/sign-in">
                 <Button size="sm" className="transition-all duration-200">Sign in</Button>
@@ -51,7 +51,7 @@ function Header() {
             </>
           )}
         </div>
-    </div>
+    </header>
   )
 }
 

@@ -15,8 +15,8 @@ const destinations = [
 
 export default function Landing() {
   return (
-    <div className="relative min-h-[calc(100vh-64px)] overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100 font-sans">
-      <Page3DBackground particleCount={800} globeClassName="absolute inset-0 opacity-[0.6]" />
+    <div className="relative w-full flex-1 overflow-hidden bg-transparent text-slate-100 font-sans">
+      <Page3DBackground particleCount={800} globeClassName="absolute inset-0 opacity-[0.85]" />
       
       <motion.div
         className="relative w-full border-y border-white/10 bg-transparent px-5 py-12 sm:px-8 lg:px-12"
