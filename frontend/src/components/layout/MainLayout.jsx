@@ -9,10 +9,10 @@ export default function MainLayout({ children }) {
       
       {/* Universal Galaxy Ambient Gradients */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-         <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] bg-indigo-600/35 blur-[100px] rounded-full animate-orb-slow" />
-         <div className="absolute top-[20%] right-[-5%] w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-cyan-500/25 blur-[90px] rounded-full animate-orb-medium" />
-         <div className="absolute bottom-[-10%] left-[20%] w-[60vw] h-[40vw] max-w-[700px] max-h-[500px] bg-fuchsia-600/30 blur-[110px] rounded-full animate-orb-slow" />
-         <div className="absolute bottom-[20%] right-[10%] w-[35vw] h-[35vw] max-w-[400px] max-h-[400px] bg-blue-600/35 blur-[100px] rounded-full animate-orb-fast" />
+         <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] bg-indigo-600/15 blur-[120px] rounded-full animate-orb-slow" />
+         <div className="absolute top-[20%] right-[-5%] w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-cyan-500/10 blur-[100px] rounded-full animate-orb-medium" />
+         <div className="absolute bottom-[-10%] left-[20%] w-[60vw] h-[40vw] max-w-[700px] max-h-[500px] bg-fuchsia-600/10 blur-[120px] rounded-full animate-orb-slow" />
+         <div className="absolute bottom-[20%] right-[10%] w-[35vw] h-[35vw] max-w-[400px] max-h-[400px] bg-blue-600/15 blur-[110px] rounded-full animate-orb-fast" />
       </div>
 
       <Header />

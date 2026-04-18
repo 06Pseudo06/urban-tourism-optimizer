@@ -51,29 +51,29 @@ const PlaceCard = ({ place, index, isLast }) => {
   return (
     <div className="relative pl-10 sm:pl-16 group flex flex-col pt-2 pb-6">
        
-       {!isLast && <div className="absolute left-7 sm:left-11 top-14 bottom-0 w-[2px] bg-white/10"></div>}
+       {!isLast && <div className="absolute left-[1.65rem] sm:left-[2.65rem] top-12 bottom-0 w-[1px] bg-white/10"></div>}
        
        {index > 0 && travelMins > 0 && (
-         <div className="flex items-center gap-3 text-slate-400 mb-6 -ml-3">
-           <div className="w-6 h-6 rounded-full bg-black/40 border border-white/20 flex items-center justify-center relative z-10 left-[2px]">
-              <ArrowDown size={14} className="text-slate-300" />
+         <div className="flex items-center gap-3 text-slate-400 mb-8 -ml-4">
+           <div className="w-5 h-5 rounded-full glass-1 flex items-center justify-center relative z-10 left-[4px]">
+              <ArrowDown size={11} className="text-slate-400" />
            </div>
-           <span className="text-sm font-semibold uppercase text-slate-300">{travelMins} min travel</span>
+           <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">{travelMins} min travel</span>
          </div>
        )}
 
-       <div className={`absolute left-4 sm:left-8 w-6 h-6 rounded-full border-4 border-slate-900 shadow-md z-10 ${
-          place.category === 'food' ? 'bg-orange-500' :
-          place.category === 'cultural' ? 'bg-purple-500' :
-          place.category === 'activity' ? 'bg-red-500' :
-          place.category === 'shopping' ? 'bg-pink-500' :
-          place.category === 'leisure' ? 'bg-green-500' : 'bg-blue-500'
-       }`} style={{ top: (index === 0 || travelMins === 0) ? '1.35rem' : '4.35rem' }}></div>
+       <div className={`absolute left-5 sm:left-9 w-3.5 h-3.5 rounded-full ring-4 ring-slate-950 shadow-md z-10 ${
+          place.category === 'food' ? 'bg-orange-400' :
+          place.category === 'cultural' ? 'bg-purple-400' :
+          place.category === 'activity' ? 'bg-red-400' :
+          place.category === 'shopping' ? 'bg-pink-400' :
+          place.category === 'leisure' ? 'bg-green-400' : 'bg-blue-400'
+       }`} style={{ top: (index === 0 || travelMins === 0) ? '1.45rem' : '4.45rem' }}></div>
        
-       <div className="bg-black/20 backdrop-blur-md rounded-2xl shadow-lg border border-white/10 overflow-hidden hover:border-white/30 hover:-translate-y-1 transition-all duration-300 ease-out flex flex-col sm:flex-row w-full max-w-4xl">
+       <div className="glass-1 overflow-hidden flex flex-col sm:flex-row w-full max-w-4xl">
          
-         <div className="sm:w-60 h-48 sm:h-auto shrink-0 relative overflow-hidden">
-            <img src={imageUrl} alt={place.name} className="w-full h-full object-cover opacity-90" loading="lazy" />
+         <div className="sm:w-64 h-48 sm:h-auto shrink-0 relative overflow-hidden">
+            <img src={imageUrl} alt={place.name} className="w-full h-full object-cover opacity-80 mix-blend-screen" loading="lazy" />
             <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-md border border-white/10 text-white rounded-lg px-3 py-1.5 flex items-center gap-2">
                <Clock size={14} />
                <span className="font-bold text-sm">
@@ -82,21 +82,21 @@ const PlaceCard = ({ place, index, isLast }) => {
             </div>
          </div>
          
-         <div className="p-5 flex-1">
-             <div className="mb-3">
-              <div className="flex justify-between items-start mb-1 gap-4">
-                 <h4 className="font-semibold text-xl text-white">{place.name || 'Unknown Place'}</h4>
+         <div className="p-6 flex-1">
+             <div className="mb-4">
+              <div className="flex justify-between items-start mb-2 gap-4">
+                 <h4 className="font-semibold text-xl text-white tracking-tight leading-tight">{place.name || 'Unknown Place'}</h4>
                  
                  {typeof place.rating === "number" && place.rating > 0 && (
-                   <div className="flex items-center gap-1 text-amber-300 bg-amber-900/40 border border-amber-500/30 px-2.5 py-1 rounded-md shrink-0">
-                     <Star size={14} className="fill-current" />
-                     <span className="font-bold text-sm">{place.rating}</span>
+                   <div className="flex items-center gap-1 text-amber-300 glass-2 px-2.5 py-1 rounded-md shrink-0">
+                     <Star size={12} className="fill-current" />
+                     <span className="font-bold text-xs">{place.rating}</span>
                    </div>
                  )}
               </div>
               
               <div className="flex gap-2 flex-wrap"> 
-                <span className="text-xs font-bold px-2 py-0.5 border border-white/10 bg-black/40 text-slate-300 rounded uppercase">
+                <span className="text-[10px] tracking-wider font-semibold px-2 py-0.5 border border-white/10 bg-white/5 text-slate-300 rounded uppercase">
                   {place.category || 'POI'}
                 </span>
                 <span className="text-xs font-bold px-2 py-0.5 rounded uppercase border border-blue-500/30 bg-blue-900/40 text-blue-300">
@@ -159,9 +159,9 @@ const ItineraryDisplay = ({ itineraryData }) => {
           return (
             <div key={dayPlan?.day || dIdx}>
 
-              <div className="sticky top-4 z-20 mx-auto max-w-4xl bg-black/40 backdrop-blur-xl border border-white/10 text-white py-3.5 mb-8 rounded-2xl px-6 flex justify-between items-center shadow-lg">
-                <h3 className="font-black text-2xl flex items-center gap-3">
-                   <span className="bg-indigo-600 text-white w-10 h-10 rounded-xl flex items-center justify-center">
+              <div className="sticky top-4 z-20 mx-auto max-w-4xl glass-2 py-4 mb-10 px-6 flex justify-between items-center text-white">
+                <h3 className="font-semibold text-2xl tracking-tight flex items-center gap-3">
+                   <span className="bg-indigo-500 text-white w-8 h-8 text-sm rounded-lg flex items-center justify-center">
                      {dayPlan?.day || dIdx + 1}
                    </span>
                    Day {dayPlan?.day || dIdx + 1}

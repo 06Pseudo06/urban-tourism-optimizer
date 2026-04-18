@@ -55,9 +55,9 @@ export default function SignIn() {
 
   return (
     <section className="relative flex-1 w-full flex flex-col items-center justify-center px-4 py-12 z-0">
-      <div className="w-full max-w-md mx-auto dark-glass p-8">
-        <h1 className="text-3xl font-bold text-white">Create your account</h1>
-        <p className="mt-1 text-sm text-slate-200">Start building optimized trips in seconds.</p>
+      <div className="w-full max-w-md mx-auto glass-1 p-6">
+        <h1 className="text-3xl font-semibold text-white">Create your account</h1>
+        <p className="mt-1 text-sm text-slate-400">Start building optimized trips in seconds.</p>
 
         {error && (
           <p className="mt-4 rounded-lg border border-red-300/50 bg-red-500/20 px-3 py-2 text-sm text-red-100">
@@ -67,7 +67,7 @@ export default function SignIn() {
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <input
-            className="w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-colors"
+            className="input-dark"
             type="text"
             name="name"
             placeholder="Full name"
@@ -76,7 +76,7 @@ export default function SignIn() {
             required
           />
           <input
-            className="w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-colors"
+            className="input-dark"
             type="email"
             name="email"
             placeholder="Email"
@@ -85,7 +85,7 @@ export default function SignIn() {
             required
           />
           <input
-            className="w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-colors"
+            className="input-dark"
             type="password"
             name="password"
             placeholder="Password"
@@ -95,7 +95,7 @@ export default function SignIn() {
             minLength={6}
           />
           <input
-            className="w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-colors"
+            className="input-dark"
             type="password"
             name="confirmPassword"
             placeholder="Confirm password"
@@ -113,7 +113,7 @@ export default function SignIn() {
           </button>
         </form>
 
-        <p className="mt-4 text-sm text-slate-200">
+        <p className="mt-4 text-sm text-slate-400">
           Already have an account?{" "}
           <Link to="/login" className="font-medium text-indigo-400 hover:text-indigo-300 transition-colors">
             Log in

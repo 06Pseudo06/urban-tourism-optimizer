@@ -21,7 +21,7 @@ export default function Landing() {
         transition={{ duration: 0.55, ease: "easeOut" }}
       >
         {/* HERO SECTION */}
-        <div className="dark-glass p-8 sm:p-12 md:p-16 flex flex-col items-center text-center gap-6 shadow-2xl shadow-black/50">
+        <div className="glass-2 p-8 sm:p-12 md:p-16 flex flex-col items-center text-center gap-6">
           <motion.div
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
@@ -34,7 +34,7 @@ export default function Landing() {
             initial={{ opacity: 0, y: 30, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-4xl sm:text-5xl md:text-6xl font-semibold leading-tight max-w-4xl"
+            className="text-4xl sm:text-5xl md:text-6xl font-semibold leading-tight tracking-tight max-w-4xl"
           >
             Turn Your Travel Dreams <br /> Into Reality In Seconds
           </motion.h1>
@@ -68,15 +68,15 @@ export default function Landing() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="grid w-full gap-6 md:grid-cols-3"
+          className="grid w-full gap-8 md:grid-cols-3"
         >
           {[
             { title: "Smart Route Intelligence", description: "Optimizes sequence, travel gaps, and day pacing based on your specific preferences." },
             { title: "Uncompromised Logistics", description: "Advanced temporal bounds ensure you only visit experiences that contextually fit your schedule." },
             { title: "Weather-Aware Planning", description: "Shifts activities robustly around rain and heat thresholds to protect comfort and time natively." },
           ].map((card) => (
-            <div key={card.title} className="dark-glass p-8 text-center sm:text-left">
-              <h3 className="text-xl font-medium text-white">{card.title}</h3>
+            <div key={card.title} className="glass-feature p-8 text-center sm:text-left">
+              <h3 className="text-xl font-medium tracking-tight text-white">{card.title}</h3>
               <p className="mt-3 text-sm text-slate-400 leading-relaxed">{card.description}</p>
             </div>
           ))}
@@ -97,9 +97,9 @@ export default function Landing() {
               </h2>
             </div>
           </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 rounded-2xl overflow-hidden shadow-2xl shadow-black/20">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {destinations.map((place) => (
-              <article key={place.name} className="group relative h-64 overflow-hidden bg-slate-900 border border-white/5 rounded-2xl">
+              <article key={place.name} className="glass-1 p-0 group relative h-64 overflow-hidden glass-hover hover:-translate-y-1">
                 <img src={place.image} alt={`${place.name}, ${place.country}`} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/30 to-transparent" />
                 <div className="absolute bottom-0 z-10 p-6">
