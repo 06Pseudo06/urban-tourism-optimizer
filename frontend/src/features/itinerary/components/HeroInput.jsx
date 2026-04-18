@@ -108,12 +108,12 @@ const HeroInput = ({ onSubmit }) => {
   };
 
   return (
-    <div className="w-full max-w-xl mx-auto bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-2xl shadow-xl shadow-blue-900/5 p-8 border border-white/40 dark:border-slate-800">
+    <div className="w-full max-w-2xl mx-auto dark-glass p-8">
       
       <div className="mb-8">
-        <h2 className="text-3xl font-extrabold mb-2 tracking-tight">Design your dream trip</h2>
-        <p className="text-slate-500">Step {step} of 4</p>
-        <div className="w-full h-2 bg-slate-100 rounded-full mt-4 overflow-hidden">
+        <h2 className="text-3xl font-semibold mb-2 text-white">Design your dream trip</h2>
+        <p className="text-slate-400 font-medium">Step {step} of 4</p>
+        <div className="w-full h-2 bg-white/10 rounded-full mt-4 overflow-hidden">
            <div className={`h-full bg-blue-600 transition-all duration-500`} style={{width: `${(step/4)*100}%`}}></div>
         </div>
         {errorMsg && <p className="text-red-500 font-medium text-sm mt-3">{errorMsg}</p>}
@@ -124,37 +124,37 @@ const HeroInput = ({ onSubmit }) => {
         {/* STEP 1: Destination */}
         <div className={`space-y-6 ${step === 1 ? 'block' : 'hidden'}`}>
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">Where to? <span className="text-red-500">*</span></label>
+            <label className="block text-sm font-semibold text-slate-300 mb-2">Where to? <span className="text-red-500">*</span></label>
             <input 
               required
               type="text" 
               placeholder="e.g. Tokyo, Paris, New York"
-              className="w-full text-lg p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition"
+              className="w-full text-lg p-4 bg-black/20 border border-white/10 rounded-xl focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition text-white placeholder:text-slate-500"
               value={formData.destination}
               onChange={e => setFormData({...formData, destination: e.target.value})}
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">Start Location (Optional)</label>
+            <label className="block text-sm font-semibold text-slate-300 mb-2">Start Location (Optional)</label>
             <input 
               type="text" 
               placeholder="e.g. My Hotel name or Airport"
-              className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none"
+              className="w-full p-4 bg-black/20 border border-white/10 rounded-xl focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition text-white placeholder:text-slate-500"
               value={formData.start_location}
               onChange={e => setFormData({...formData, start_location: e.target.value})}
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">End Location (Optional)</label>
+            <label className="block text-sm font-semibold text-slate-300 mb-2">End Location (Optional)</label>
             <input 
               type="text" 
               placeholder="e.g. Airport or Train Station"
-              className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none"
+              className="w-full p-4 bg-black/20 border border-white/10 rounded-xl focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition text-white placeholder:text-slate-500"
               value={formData.end_location}
               onChange={e => setFormData({...formData, end_location: e.target.value})}
             />
           </div>
-          <button type="button" onClick={handleNext} disabled={!formData.destination} className="w-full py-4 px-6 bg-slate-900 text-white rounded-xl font-bold mt-6 disabled:opacity-50 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-500/20 transition-all">
+          <button type="button" onClick={handleNext} disabled={!formData.destination} className="w-full mt-6 primary-btn text-center disabled:opacity-50">
             Next
           </button>
         </div>
@@ -162,50 +162,50 @@ const HeroInput = ({ onSubmit }) => {
         {/* STEP 2: Dates and Timing */}
         <div className={`space-y-6 ${step === 2 ? 'block' : 'hidden'}`}>
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">How many days? <span className="text-red-500">*</span></label>
+            <label className="block text-sm font-semibold text-slate-300 mb-2">How many days? <span className="text-red-500">*</span></label>
             <input 
               required type="number" min="1" max="14"
-              className="w-full text-lg p-4 bg-slate-50 border border-slate-200 rounded-xl"
+              className="w-full text-lg p-4 bg-black/20 border border-white/10 rounded-xl text-white outline-none focus:border-indigo-500"
               value={formData.days}
               onChange={e => setFormData({...formData, days: parseInt(e.target.value) || ''})}
             />
           </div>
           <div className="flex gap-4">
              <div className="flex-1">
-               <label className="block text-sm font-semibold text-slate-700 mb-2">Start Date (Optional)</label>
-               <input type="date" className="w-full p-3 bg-slate-50 border rounded-xl" value={formData.start_date} onChange={e=>setFormData({...formData, start_date: e.target.value})}/>
+               <label className="block text-sm font-semibold text-slate-300 mb-2">Start Date (Optional)</label>
+               <input type="date" className="w-full p-3 bg-black/20 text-white border border-white/10 rounded-xl outline-none focus:border-indigo-500" value={formData.start_date} onChange={e=>setFormData({...formData, start_date: e.target.value})}/>
              </div>
              <div className="flex-1">
-               <label className="block text-sm font-semibold text-slate-700 mb-2">End Date</label>
-               <input type="date" className="w-full p-3 bg-slate-50 border rounded-xl" value={formData.end_date} onChange={e=>setFormData({...formData, end_date: e.target.value})}/>
+               <label className="block text-sm font-semibold text-slate-300 mb-2">End Date</label>
+               <input type="date" className="w-full p-3 bg-black/20 text-white border border-white/10 rounded-xl outline-none focus:border-indigo-500" value={formData.end_date} onChange={e=>setFormData({...formData, end_date: e.target.value})}/>
              </div>
           </div>
           <div className="flex gap-4">
              <div className="flex-1">
-               <label className="block text-sm font-semibold text-slate-700 mb-2">Daily Start Time</label>
-               <input required type="time" className="w-full p-3 bg-slate-50 border rounded-xl" value={formData.start_time} onChange={e=>setFormData({...formData, start_time: e.target.value})}/>
+               <label className="block text-sm font-semibold text-slate-300 mb-2">Daily Start Time</label>
+               <input required type="time" className="w-full p-3 bg-black/20 text-white border border-white/10 rounded-xl outline-none focus:border-indigo-500" value={formData.start_time} onChange={e=>setFormData({...formData, start_time: e.target.value})}/>
              </div>
              <div className="flex-1">
-               <label className="block text-sm font-semibold text-slate-700 mb-2">Daily End Time</label>
-               <input required type="time" className="w-full p-3 bg-slate-50 border rounded-xl" value={formData.end_time} onChange={e=>setFormData({...formData, end_time: e.target.value})}/>
+               <label className="block text-sm font-semibold text-slate-300 mb-2">Daily End Time</label>
+               <input required type="time" className="w-full p-3 bg-black/20 text-white border border-white/10 rounded-xl outline-none focus:border-indigo-500" value={formData.end_time} onChange={e=>setFormData({...formData, end_time: e.target.value})}/>
              </div>
           </div>
-          <div className="flex gap-4 pt-4">
-            <button type="button" onClick={handlePrev} className="px-6 py-4 rounded-xl font-bold border hover:bg-slate-50">Back</button>
-            <button type="button" onClick={handleNext} className="flex-1 py-4 px-6 bg-slate-900 text-white rounded-xl font-bold transition-all hover:shadow-lg hover:shadow-slate-500/20 hover:-translate-y-0.5">Next</button>
+          <div className="flex gap-6 pt-6">
+            <button type="button" onClick={handlePrev} className="secondary-btn w-32">Back</button>
+            <button type="button" onClick={handleNext} className="flex-1 primary-btn text-center">Next</button>
           </div>
         </div>
 
         {/* STEP 3: Preferences */}
         <div className={`space-y-6 ${step === 3 ? 'block' : 'hidden'}`}>
           <div>
-             <label className="block text-sm font-semibold text-slate-700 mb-2">Who's traveling?</label>
+             <label className="block text-sm font-semibold text-slate-300 mb-2">Who's traveling?</label>
              <div className="flex flex-wrap gap-3">
                {['solo', 'couple', 'family', 'friends'].map(opt => (
                  <button 
                     key={opt} type="button"
                     onClick={() => setFormData({...formData, travel_type: opt})}
-                    className={`flex-1 min-w-[100px] p-3 rounded-xl text-center capitalize font-medium transition border ${formData.travel_type === opt ? 'bg-blue-50 border-blue-600 text-blue-700' : 'bg-slate-50 border-slate-200 text-slate-600 hover:border-blue-300'}`}
+                    className={`flex-1 min-w-[100px] p-3 rounded-xl text-center capitalize font-medium transition border ${formData.travel_type === opt ? 'bg-indigo-500/20 border-indigo-500 text-indigo-300' : 'bg-black/20 border-white/10 text-slate-300 hover:border-white/30'}`}
                  >
                     {opt}
                  </button>
@@ -213,13 +213,13 @@ const HeroInput = ({ onSubmit }) => {
              </div>
           </div>
           <div>
-             <label className="block text-sm font-semibold text-slate-700 mb-2">Budget Tier</label>
+             <label className="block text-sm font-semibold text-slate-300 mb-2">Budget Tier</label>
              <div className="flex gap-3">
                {['budget', 'mid', 'luxury'].map(opt => (
                  <button 
                     key={opt} type="button"
                     onClick={() => setFormData({...formData, budget: opt})}
-                    className={`flex-1 p-3 rounded-xl text-center capitalize font-medium transition border ${formData.budget === opt ? 'bg-emerald-50 border-emerald-600 text-emerald-700' : 'bg-slate-50 border-slate-200 text-slate-600 hover:border-emerald-300'}`}
+                    className={`flex-1 p-3 rounded-xl text-center capitalize font-medium transition border ${formData.budget === opt ? 'bg-emerald-500/20 border-emerald-500 text-emerald-300' : 'bg-black/20 border-white/10 text-slate-300 hover:border-white/30'}`}
                  >
                     {opt}
                  </button>
@@ -227,43 +227,43 @@ const HeroInput = ({ onSubmit }) => {
              </div>
           </div>
           <div>
-             <label className="block text-sm font-semibold text-slate-700 mb-2">What do you love?</label>
+             <label className="block text-sm font-semibold text-slate-300 mb-2">What do you love?</label>
              <div className="flex flex-wrap gap-2">
                {interestOptions.map(int => (
                  <button 
                     key={int} type="button"
                     onClick={() => toggleInterest(int)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition border ${formData.interests.includes(int) ? 'bg-slate-900 border-slate-900 text-white' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-400'}`}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition border ${formData.interests.includes(int) ? 'bg-white border-white text-slate-900' : 'bg-black/20 border-white/10 text-slate-300 hover:border-white/30'}`}
                  >
                     {formData.interests.includes(int) ? '✓ ' + int : '+ ' + int}
                  </button>
                ))}
              </div>
           </div>
-          <div className="flex gap-4 pt-4">
-            <button type="button" onClick={handlePrev} className="px-6 py-4 rounded-xl font-bold border hover:bg-slate-50">Back</button>
-            <button type="button" onClick={handleNext} className="flex-1 py-4 px-6 bg-slate-900 text-white rounded-xl font-bold transition-all hover:shadow-lg hover:shadow-slate-500/20 hover:-translate-y-0.5">Next</button>
+          <div className="flex gap-6 pt-6">
+            <button type="button" onClick={handlePrev} className="secondary-btn w-32">Back</button>
+            <button type="button" onClick={handleNext} className="flex-1 primary-btn text-center">Next</button>
           </div>
         </div>
 
         {/* STEP 4: Review and Submit */}
         <div className={`space-y-6 ${step === 4 ? 'block' : 'hidden'}`}>
-           <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 space-y-4">
-              <p><strong>Destination:</strong> {formData.destination}</p>
-              <p><strong>Duration:</strong> {formData.days} Days ({formData.start_time} - {formData.end_time})</p>
-              <p><strong>Travelers:</strong> <span className="capitalize">{formData.travel_type}</span> on <span className="capitalize">{formData.budget}</span> budget</p>
-              <p><strong>Interests:</strong> {formData.interests.length ? formData.interests.join(', ') : 'None'}</p>
-              {formData.start_date && <p><strong>Dates:</strong> {formData.start_date} to {formData.end_date}</p>}
+           <div className="bg-black/30 p-6 rounded-xl border border-white/10 space-y-4 text-slate-300">
+              <p><strong className="text-white">Destination:</strong> {formData.destination}</p>
+              <p><strong className="text-white">Duration:</strong> {formData.days} Days ({formData.start_time} - {formData.end_time})</p>
+              <p><strong className="text-white">Travelers:</strong> <span className="capitalize">{formData.travel_type}</span> on <span className="capitalize">{formData.budget}</span> budget</p>
+              <p><strong className="text-white">Interests:</strong> {formData.interests.length ? formData.interests.join(', ') : 'None'}</p>
+              {formData.start_date && <p><strong className="text-white">Dates:</strong> {formData.start_date} to {formData.end_date}</p>}
            </div>
 
-           <div className="flex gap-4 pt-4">
-            <button type="button" onClick={handlePrev} className="px-6 py-4 rounded-xl font-bold border hover:bg-slate-50 transition-colors">Back</button>
-            <button type="submit" disabled={!!errorMsg || isSubmitting} className="flex-1 py-4 px-6 hero-gradient-btn text-white rounded-xl font-bold hover:-translate-y-0.5 disabled:opacity-50 transition-all flex items-center justify-center">
+           <div className="flex gap-6 mt-8">
+            <button type="button" onClick={handlePrev} className="secondary-btn w-32">Back</button>
+            <button type="submit" disabled={!!errorMsg || isSubmitting} className="flex-1 primary-btn disabled:opacity-50 flex items-center justify-center gap-2">
               {isSubmitting ? (
-                 <span className="flex items-center gap-2">
+                 <>
                     <span className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin"></span>
-                    Generating...
-                 </span>
+                    <span>Generating...</span>
+                 </>
               ) : 'Generate Itinerary →'}
             </button>
           </div>

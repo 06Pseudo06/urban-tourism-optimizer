@@ -47,14 +47,8 @@ export default function Login() {
   };
 
   return (
-    <section className="relative flex-1 w-full flex items-center justify-center px-4 py-10 z-0 overflow-hidden">
-      <div className="fixed inset-0 bg-slate-950 -z-10">
-        <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] rounded-full bg-indigo-600/15 blur-[120px]" />
-        <div className="absolute top-[50%] -right-[10%] w-[40%] h-[60%] rounded-full bg-cyan-600/10 blur-[100px]" />
-        <div className="absolute inset-0 bg-slate-950/40" />
-      </div>
-
-      <div className="relative z-10 w-full max-w-md rounded-2xl border border-white/10 bg-slate-900/40 p-8 backdrop-blur-xl shadow-2xl shadow-black/50">
+    <section className="relative flex-1 w-full flex flex-col items-center justify-center px-4 py-12 z-0">
+      <div className="w-full max-w-md mx-auto dark-glass p-8">
         <h1 className="text-3xl font-bold text-white">Welcome back</h1>
         <p className="mt-1 text-sm text-slate-200">Login to continue planning your trip.</p>
 
@@ -86,7 +80,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={isLoading}
-            className="mt-2 w-full rounded-xl bg-indigo-600 hover:bg-indigo-500 transition-colors px-4 py-3 font-medium text-white disabled:opacity-60 shadow-md shadow-indigo-900/20"
+            className="w-full primary-btn mt-4 disabled:opacity-60 text-center"
           >
             {isLoading ? "Logging in..." : "Log in"}
           </button>

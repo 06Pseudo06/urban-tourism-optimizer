@@ -20,14 +20,12 @@ function Itinerary() {
   };
 
   return (
-    <div className="w-full relative min-h-screen overflow-hidden bg-slate-50 text-slate-900 flex flex-col md:flex-row">
-      <div className="absolute top-0 inset-x-0 h-48 bg-gradient-to-b from-slate-900/20 to-transparent pointer-events-none z-0" />
-      
-      <div className={`relative w-full h-[calc(100vh-64px)] overflow-y-auto transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] z-10 ${itineraryData && showMap ? 'md:w-1/2 md:border-r border-slate-200 shadow-xl shadow-slate-200' : 'w-full'}`}>
+    <div className="w-full relative min-h-screen flex flex-col md:flex-row text-slate-100">
+      <div className={`relative w-full h-[calc(100vh-64px)] overflow-y-auto transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] z-10 ${itineraryData && showMap ? 'md:w-1/2 md:border-r border-white/10' : 'w-full'}`}>
 
         {!itineraryData && !isLoading && (
           <motion.div
-            className="flex justify-center items-center py-12 px-6"
+            className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex justify-center"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -38,9 +36,9 @@ function Itinerary() {
 
         {isLoading && (
           <div className="w-full max-w-3xl mx-auto px-6 py-32 flex flex-col items-center justify-center space-y-6">
-            <div className="w-16 h-16 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin"></div>
-            <h3 className="text-xl font-bold text-slate-700 animate-pulse">Engineering your optimal route...</h3>
-            <p className="text-slate-500 text-center max-w-sm">Checking API bounds, balancing categories, and measuring local distance metrics.</p>
+            <div className="w-16 h-16 border-4 border-white/10 border-t-cyan-400 rounded-full animate-spin"></div>
+            <h3 className="text-xl font-bold text-white animate-pulse">Engineering your optimal route...</h3>
+            <p className="text-slate-400 text-center max-w-sm">Checking API bounds, balancing categories, and measuring local distance metrics.</p>
           </div>
         )}
 
@@ -59,18 +57,18 @@ function Itinerary() {
 
         {itineraryData && !isLoading && (
           <div className="pb-24 relative">
-            <div className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b px-6 py-4 flex justify-between items-center shadow-sm">
-              
+            <div className="sticky top-0 z-50 bg-black/40 backdrop-blur-xl border-b border-white/10 px-6 py-4 flex justify-between items-center shadow-lg">
               <button 
                 onClick={() => { resetItinerary(); setShowMap(false); }}
-                className="text-sm font-bold text-slate-500 hover:text-slate-900 transition"
+                className="text-sm font-semibold text-slate-300 hover:text-white transition-colors"
+                aria-label="Edit Preferences"
               >
                 ← Edit Preferences
               </button>
 
               <button 
                 onClick={() => setShowMap(!showMap)}
-                className="flex items-center gap-2 px-4 py-2 hero-gradient-btn text-white rounded-lg text-sm font-bold transition"
+                className="primary-btn text-sm flex items-center justify-center gap-2 px-5 py-2"
               >
                 {showMap ? <><X size={16}/> Close Map</> : <><MapIcon size={16}/> View Map</>}
               </button>
@@ -82,7 +80,7 @@ function Itinerary() {
       </div>
 
       {itineraryData && !isLoading && (
-        <div className={`transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] bg-slate-100 relative ${showMap ? 'w-full md:w-1/2 md:block block h-[50vh] md:h-[calc(100vh-64px)] opacity-100 translate-x-0' : 'w-0 hidden h-0 overflow-hidden opacity-0 translate-x-12'}`}>
+        <div className={`transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] bg-slate-950 relative ${showMap ? 'w-full md:w-1/2 md:block block h-[50vh] md:h-[calc(100vh-64px)] opacity-100 translate-x-0' : 'w-0 hidden h-0 overflow-hidden opacity-0 translate-x-12'}`}>
           {showMap && (
              <MapPanel 
                 places={
