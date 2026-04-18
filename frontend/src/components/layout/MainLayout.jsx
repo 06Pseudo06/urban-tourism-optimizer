@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import { useLocation } from 'react-router-dom';
+import ChatbotWidget from '../ui/custom/ChatbotWidget';
 
 export default function MainLayout({ children }) {
   return (
@@ -19,6 +20,7 @@ export default function MainLayout({ children }) {
       <main className="flex-1 w-full relative flex flex-col z-10">
         {children}
       </main>
+      <ChatbotWidget />
       <Footer />
     </div>
   );
