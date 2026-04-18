@@ -65,12 +65,12 @@ export default function Landing() {
                 className="flex flex-wrap items-center gap-3"
               >
                 <Link to="/create-trip">
-                  <Button className="hero-gradient-btn px-7 py-5 text-base font-bold text-white">
+                  <Button className="hero-gradient-btn px-7 py-5 text-base font-bold text-white hover:scale-[1.02]">
                     Start Planning
                   </Button>
                 </Link>
                 <Link to="/login">
-                  <Button variant="outline" className="glass-card px-7 py-5 text-base font-semibold text-white hover:bg-white/15">
+                  <Button variant="outline" className="glass-card px-7 py-5 text-base font-semibold text-white hover:bg-white/15 hover:-translate-y-0.5">
                     View Live Dashboard
                   </Button>
                 </Link>
@@ -150,7 +150,7 @@ export default function Landing() {
                 </h2>
               </div>
               <Link to="/create-trip">
-                <Button className="hero-gradient-btn text-white">Start Exploring</Button>
+                <Button className="hero-gradient-btn text-white hover:scale-[1.02]">Start Exploring</Button>
               </Link>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">

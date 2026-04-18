@@ -136,7 +136,7 @@ export default function GlobeScene({
   const glowRef = useRef();
   const focusRotationRef = useRef({ x: 0.2, y: 0 });
   const { groupRef: animatedGroupRef, onPointerMove } = useGlobeAnimation({
-    rotationSpeed: 0.05,
+    rotationSpeed: 0.07,
     parallaxStrength: 0.12,
   });
 
@@ -161,10 +161,10 @@ export default function GlobeScene({
 
   useFrame((state, delta) => {
     if (earthRef.current) {
-      earthRef.current.rotation.y += delta * 0.011;
+      earthRef.current.rotation.y += delta * 0.015;
     }
     if (glowRef.current) {
-      glowRef.current.rotation.y -= delta * 0.018;
+      glowRef.current.rotation.y -= delta * 0.025;
       glowRef.current.scale.setScalar(1.05 + Math.sin(state.clock.elapsedTime * 1.5) * 0.015);
     }
     if (groupRef.current) {
@@ -219,9 +219,9 @@ export default function GlobeScene({
               side={THREE.DoubleSide}
             />
           </mesh>
-          <ParticleRing radius={2.12} count={180} color="#22d3ee" speed={0.14} tilt={[0.2, 0, 0]} />
-          <ParticleRing radius={2.45} count={220} color="#818cf8" speed={-0.1} tilt={[0.9, 0.12, 0]} />
-          <ParticleRing radius={2.8} count={260} color="#f472b6" speed={0.08} tilt={[1.1, 0.5, 0.2]} />
+          <ParticleRing radius={2.12} count={240} color="#22d3ee" speed={0.18} tilt={[0.2, 0, 0]} />
+          <ParticleRing radius={2.45} count={300} color="#818cf8" speed={-0.13} tilt={[0.9, 0.12, 0]} />
+          <ParticleRing radius={2.8} count={350} color="#f472b6" speed={0.1} tilt={[1.1, 0.5, 0.2]} />
           <OrbitingVehicle radius={3.35} speed={0.45} color="#38bdf8" type="ship" tilt={[0.1, 1, 0.2]} />
           <OrbitingVehicle radius={3.85} speed={0.28} color="#f5d0fe" type="plane" tilt={[0.35, 0.9, -0.1]} />
         </group>

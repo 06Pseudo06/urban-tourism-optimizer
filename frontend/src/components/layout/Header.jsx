@@ -1,10 +1,30 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from '../ui/button'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 function Header() {
   const location = useLocation();
+  const navigate = useNavigate();
   const isAuthRoute = location.pathname === "/login" || location.pathname === "/sign-in";
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = () => {
+      const newAuth = !!localStorage.getItem("authToken");
+      setIsAuthenticated(prev => (prev !== newAuth ? newAuth : prev));
+    };
+    checkAuth();
+    window.addEventListener('authChange', checkAuth);
+    return () => window.removeEventListener('authChange', checkAuth);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("authUser");
+    window.dispatchEvent(new Event("authChange"));
+    navigate("/", { replace: true });
+  };
 
   return (
     <div className='p-3 shadow-sm flex justify-between items-center px-5 bg-slate-950 text-white border-b border-white/10'>
@@ -15,15 +35,21 @@ function Header() {
         <div className='flex items-center gap-2'>
           {!isAuthRoute && (
             <Link to="/create-trip">
-              <Button size="sm" className="hero-gradient-btn text-white">Plan Trip</Button>
+              <Button size="sm" className="hero-gradient-btn text-white hover:scale-[1.02] transition-transform duration-200">Plan Trip</Button>
             </Link>
           )}
-          <Link to="/login">
-            <Button size="sm" variant={isAuthRoute ? "outline" : "default"}>Login</Button>
-          </Link>
-          <Link to="/sign-in">
-            <Button size="sm">Sign in</Button>
-          </Link>
+          {isAuthenticated ? (
+            <Button size="sm" variant="outline" className="transition-all duration-200 hover:bg-slate-800" onClick={handleLogout}>Sign out</Button>
+          ) : (
+            <>
+              <Link to="/login">
+                <Button size="sm" variant={isAuthRoute ? "outline" : "default"} className="transition-all duration-200">Login</Button>
+              </Link>
+              <Link to="/sign-in">
+                <Button size="sm" className="transition-all duration-200">Sign in</Button>
+              </Link>
+            </>
+          )}
         </div>
     </div>
   )

@@ -17,6 +17,7 @@ const HeroInput = ({ onSubmit }) => {
 
   const [step, setStep] = useState(1);
   const [errorMsg, setErrorMsg] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const interestOptions = ['Culture', 'Nature', 'Food', 'History', 'Shopping', 'Nightlife'];
 
@@ -77,19 +78,25 @@ const HeroInput = ({ onSubmit }) => {
     setStep(s => Math.max(s - 1, 1));
   };
   
-  const submitForm = (e) => {
-  e.preventDefault();
-  if (!validateStep(4)) return;
+  const submitForm = async (e) => {
+    e.preventDefault();
+    if (!validateStep(4) || isSubmitting) return;
 
-  // Strip empty strings and undefined values
-  const cleanPayload = Object.fromEntries(
-    Object.entries(formData).filter(([, v]) => v !== '' && v !== null && v !== undefined)
-  );
-  // Ensure interests is always an array
-  cleanPayload.interests = Array.isArray(formData.interests) ? formData.interests : [];
-  
-  onSubmit(cleanPayload);
-}; 
+    setIsSubmitting(true);
+    
+    try {
+      const cleanPayload = Object.fromEntries(
+        Object.entries(formData).filter(([, v]) => v !== '' && v !== null && v !== undefined)
+      );
+      cleanPayload.interests = Array.isArray(formData.interests) ? formData.interests : [];
+      
+      await onSubmit(cleanPayload);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }; 
 
   const toggleInterest = (i) => {
     setFormData(prev => ({
@@ -250,9 +257,14 @@ const HeroInput = ({ onSubmit }) => {
            </div>
 
            <div className="flex gap-4 pt-4">
-            <button type="button" onClick={handlePrev} className="px-6 py-4 rounded-xl font-bold border hover:bg-slate-50">Back</button>
-            <button type="submit" disabled={!!errorMsg} className="flex-1 py-4 px-6 hero-gradient-btn text-white rounded-xl font-bold hover:-translate-y-0.5 disabled:opacity-50 transition">
-              Generate Itinerary →
+            <button type="button" onClick={handlePrev} className="px-6 py-4 rounded-xl font-bold border hover:bg-slate-50 transition-colors">Back</button>
+            <button type="submit" disabled={!!errorMsg || isSubmitting} className="flex-1 py-4 px-6 hero-gradient-btn text-white rounded-xl font-bold hover:-translate-y-0.5 disabled:opacity-50 transition-all flex items-center justify-center">
+              {isSubmitting ? (
+                 <span className="flex items-center gap-2">
+                    <span className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin"></span>
+                    Generating...
+                 </span>
+              ) : 'Generate Itinerary →'}
             </button>
           </div>
         </div>

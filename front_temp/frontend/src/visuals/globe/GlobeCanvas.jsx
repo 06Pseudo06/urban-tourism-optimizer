@@ -4,6 +4,18 @@ import GlobeScene from "./GlobeScene";
 import GlobeControls from "./GlobeControls";
 
 import { useThree } from "@react-three/fiber";
+import { useEffect } from "react";
+
+const CleanupHandling = () => {
+  const { gl, scene } = useThree();
+  useEffect(() => {
+    return () => {
+      gl.dispose();
+      scene.clear();
+    };
+  }, [gl, scene]);
+  return null;
+};
 
 const GlobeCanvas = memo(function GlobeCanvas({
   className = "",
@@ -13,25 +25,25 @@ const GlobeCanvas = memo(function GlobeCanvas({
   interactive = true,
 }) {
   const responsiveParticleCount = useMemo(() => {
-    const base = particleCount ?? 600;
+    const base = particleCount ?? 1400;
     if (typeof window !== "undefined" && window.innerWidth < 768) {
-      return Math.max(300, Math.floor(base * 0.45));
+      return Math.max(350, Math.floor(base * 0.45));
     }
     return base;
   }, [particleCount]);
 
   return (
-    <div className={`relative ${className}`}>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.1),transparent_70%)] pointer-events-none z-10" />
+    <div className={className}>
       <Canvas
         dpr={[1, 1.8]}
         camera={{ position: [0, 0, 5.8], fov: 45, near: 0.1, far: 200 }}
         frameloop="always"
         gl={{ antialias: true, alpha: true }}
       >
+        <CleanupHandling />
         <color attach="background" args={["#020617"]} />
-        <ambientLight intensity={0.8} />
-        <directionalLight position={[2.5, 1.6, 2.4]} intensity={0.9} color="#93c5fd" />
+        <ambientLight intensity={0.6} />
+        <directionalLight position={[2.5, 1.6, 2.4]} intensity={1.2} color="#93c5fd" />
         <pointLight position={[-2.8, -1.5, -2.2]} intensity={0.7} color="#818cf8" />
         <Suspense fallback={null}>
           <GlobeScene

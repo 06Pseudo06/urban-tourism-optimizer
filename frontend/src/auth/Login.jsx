@@ -17,7 +17,7 @@ export default function Login() {
     setError("");
     try {
       setIsLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/login`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -34,9 +34,14 @@ export default function Login() {
       if (data?.user) {
         localStorage.setItem("authUser", JSON.stringify(data.user));
       }
+      window.dispatchEvent(new Event("authChange"));
       navigate("/create-trip");
     } catch (submitError) {
-      setError(submitError.message);
+      if (submitError.message?.includes("arguments")) {
+        setError("Invalid email or password.");
+      } else {
+        setError(submitError.message);
+      }
     } finally {
       setIsLoading(false);
     }

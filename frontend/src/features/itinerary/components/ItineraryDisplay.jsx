@@ -51,7 +51,7 @@ const PlaceCard = ({ place, index, isLast }) => {
   return (
     <div className="relative pl-10 sm:pl-16 group flex flex-col pt-2 pb-6">
        
-       {!isLast && <div className="absolute left-6 sm:left-10 top-14 bottom-0 w-[2px] bg-slate-200 dark:bg-slate-700"></div>}
+       {!isLast && <div className="absolute left-7 sm:left-11 top-14 bottom-0 w-[2px] bg-slate-200/80 dark:bg-slate-700"></div>}
        
        {index > 0 && travelMins > 0 && (
          <div className="flex items-center gap-3 text-slate-500 mb-6 -ml-3">
@@ -62,15 +62,15 @@ const PlaceCard = ({ place, index, isLast }) => {
          </div>
        )}
 
-       <div className={`absolute left-4 sm:left-8 w-5 h-5 rounded-full border-4 border-white shadow-md z-10 ${
+       <div className={`absolute left-4 sm:left-8 w-6 h-6 rounded-full border-4 border-white shadow-md z-10 ${
           place.category === 'food' ? 'bg-orange-500' :
           place.category === 'cultural' ? 'bg-purple-500' :
           place.category === 'activity' ? 'bg-red-500' :
           place.category === 'shopping' ? 'bg-pink-500' :
           place.category === 'leisure' ? 'bg-green-500' : 'bg-blue-500'
-       }`} style={{ top: (index === 0 || travelMins === 0) ? '1.5rem' : '4.5rem' }}></div>
+       }`} style={{ top: (index === 0 || travelMins === 0) ? '1.35rem' : '4.35rem' }}></div>
        
-       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border overflow-hidden hover:shadow-xl transition-all flex flex-col sm:flex-row w-full max-w-4xl">
+       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden hover:shadow-md hover:-translate-y-1 transition-all duration-300 ease-out flex flex-col sm:flex-row w-full max-w-4xl">
          
          <div className="sm:w-60 h-48 sm:h-auto shrink-0 relative overflow-hidden">
             <img src={imageUrl} alt={place.name} className="w-full h-full object-cover" loading="lazy" />
@@ -85,7 +85,7 @@ const PlaceCard = ({ place, index, isLast }) => {
          <div className="p-5 flex-1">
             <div className="mb-3">
               <div className="flex justify-between items-start mb-1 gap-4">
-                 <h4 className="font-extrabold text-xl">{place.name || 'Unknown Place'}</h4>
+                 <h4 className="font-semibold text-xl text-slate-900 dark:text-slate-100">{place.name || 'Unknown Place'}</h4>
                  
                  {typeof place.rating === "number" && place.rating > 0 && (
                    <div className="flex items-center gap-1 text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md shrink-0">
@@ -108,7 +108,7 @@ const PlaceCard = ({ place, index, isLast }) => {
             {place.reason && (
               <div className="mt-2 bg-blue-50 border rounded-lg p-3 flex gap-2">
                 <Info size={16} />
-                <p className="text-sm italic">{place.reason}</p>
+                <p className="text-sm italic text-slate-600">{place.reason}</p>
               </div>
             )}
          </div>

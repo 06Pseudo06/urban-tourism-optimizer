@@ -27,7 +27,7 @@ export default function SignIn() {
 
     try {
       setIsLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/register`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -44,7 +44,11 @@ export default function SignIn() {
 
       navigate("/login");
     } catch (submitError) {
-      setError(submitError.message);
+      if (submitError.message?.includes("arguments") || submitError.message?.includes("User is not defined")) {
+        setError("Sign-up failed due to an unexpected problem. Please try again.");
+      } else {
+        setError(submitError.message);
+      }
     } finally {
       setIsLoading(false);
     }

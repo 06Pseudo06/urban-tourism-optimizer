@@ -21,7 +21,7 @@ function Itinerary() {
 
   return (
     <div className="w-full relative min-h-screen overflow-hidden bg-slate-50 text-slate-900 flex flex-col md:flex-row">
-      <div className="absolute top-0 inset-x-0 h-48 bg-gradient-to-b from-slate-200/50 via-slate-100/20 to-transparent pointer-events-none z-0" />
+      <div className="absolute top-0 inset-x-0 h-48 bg-gradient-to-b from-slate-900/20 to-transparent pointer-events-none z-0" />
       
       <div className={`relative w-full h-[calc(100vh-64px)] overflow-y-auto transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] z-10 ${itineraryData && showMap ? 'md:w-1/2 md:border-r border-slate-200 shadow-xl shadow-slate-200' : 'w-full'}`}>
 
