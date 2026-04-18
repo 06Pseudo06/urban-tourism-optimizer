@@ -147,7 +147,7 @@ const HeroInput = ({ onSubmit }) => {
               onChange={e => setFormData({...formData, end_location: e.target.value})}
             />
           </div>
-          <button type="button" onClick={handleNext} disabled={!formData.destination} className="w-full py-4 px-6 bg-slate-900 text-white rounded-xl font-bold mt-6 disabled:opacity-50 hover:-translate-y-0.5 transition">
+          <button type="button" onClick={handleNext} disabled={!formData.destination} className="w-full py-4 px-6 bg-slate-900 text-white rounded-xl font-bold mt-6 disabled:opacity-50 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-500/20 transition-all">
             Next
           </button>
         </div>
@@ -185,7 +185,7 @@ const HeroInput = ({ onSubmit }) => {
           </div>
           <div className="flex gap-4 pt-4">
             <button type="button" onClick={handlePrev} className="px-6 py-4 rounded-xl font-bold border hover:bg-slate-50">Back</button>
-            <button type="button" onClick={handleNext} className="flex-1 py-4 px-6 bg-slate-900 text-white rounded-xl font-bold transition">Next</button>
+            <button type="button" onClick={handleNext} className="flex-1 py-4 px-6 bg-slate-900 text-white rounded-xl font-bold transition-all hover:shadow-lg hover:shadow-slate-500/20 hover:-translate-y-0.5">Next</button>
           </div>
         </div>
 
@@ -235,7 +235,7 @@ const HeroInput = ({ onSubmit }) => {
           </div>
           <div className="flex gap-4 pt-4">
             <button type="button" onClick={handlePrev} className="px-6 py-4 rounded-xl font-bold border hover:bg-slate-50">Back</button>
-            <button type="button" onClick={handleNext} className="flex-1 py-4 px-6 bg-slate-900 text-white rounded-xl font-bold transition">Next</button>
+            <button type="button" onClick={handleNext} className="flex-1 py-4 px-6 bg-slate-900 text-white rounded-xl font-bold transition-all hover:shadow-lg hover:shadow-slate-500/20 hover:-translate-y-0.5">Next</button>
           </div>
         </div>
 
@@ -251,7 +251,7 @@ const HeroInput = ({ onSubmit }) => {
 
            <div className="flex gap-4 pt-4">
             <button type="button" onClick={handlePrev} className="px-6 py-4 rounded-xl font-bold border hover:bg-slate-50">Back</button>
-            <button type="submit" disabled={!!errorMsg} className="flex-1 py-4 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold shadow-lg shadow-blue-500/30 hover:-translate-y-0.5 disabled:opacity-50 transition">
+            <button type="submit" disabled={!!errorMsg} className="flex-1 py-4 px-6 hero-gradient-btn text-white rounded-xl font-bold hover:-translate-y-0.5 disabled:opacity-50 transition">
               Generate Itinerary →
             </button>
           </div>

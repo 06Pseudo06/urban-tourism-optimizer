@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Page3DBackground from "@/components/custom/Page3DBackground";
+import Page3DBackground from "@/visuals/background/Page3DBackground";
 
 export default function SignIn() {
   const navigate = useNavigate();

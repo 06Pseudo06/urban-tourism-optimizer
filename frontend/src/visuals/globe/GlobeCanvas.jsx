@@ -3,6 +3,20 @@ import { Canvas } from "@react-three/fiber";
 import GlobeScene from "./GlobeScene";
 import GlobeControls from "./GlobeControls";
 
+import { useThree } from "@react-three/fiber";
+import { useEffect } from "react";
+
+const CleanupHandling = () => {
+  const { gl, scene } = useThree();
+  useEffect(() => {
+    return () => {
+      gl.dispose();
+      scene.clear();
+    };
+  }, [gl, scene]);
+  return null;
+};
+
 const GlobeCanvas = memo(function GlobeCanvas({
   className = "",
   particleCount,
@@ -26,6 +40,7 @@ const GlobeCanvas = memo(function GlobeCanvas({
         frameloop="always"
         gl={{ antialias: true, alpha: true }}
       >
+        <CleanupHandling />
         <color attach="background" args={["#020617"]} />
         <ambientLight intensity={0.6} />
         <directionalLight position={[2.5, 1.6, 2.4]} intensity={1.2} color="#93c5fd" />

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { Line, Stars, useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import Particles from "./Particles";
+import Particles from "@/visuals/particles/Particles";
 import { useGlobeAnimation } from "@/hooks/useGlobeAnimation";
 
 const EARTH_TEXTURE_URL =
@@ -161,7 +161,7 @@ export default function GlobeScene({
 
   useFrame((state, delta) => {
     if (earthRef.current) {
-      earthRef.current.rotation.y += delta * 0.05;
+      earthRef.current.rotation.y += delta * 0.015;
     }
     if (glowRef.current) {
       glowRef.current.rotation.y -= delta * 0.025;
@@ -190,10 +190,10 @@ export default function GlobeScene({
             <sphereGeometry args={[1.45, 64, 64]} />
             <meshStandardMaterial
               map={earthMap}
-              roughness={0.62}
-              metalness={0.25}
-              emissive={"#1e40af"}
-              emissiveIntensity={0.2}
+              roughness={0.4}
+              metalness={0.6}
+              emissive={"#1e3a8a"}
+              emissiveIntensity={0.15}
             />
           </mesh>
           <mesh ref={glowRef}>
@@ -237,7 +237,7 @@ export default function GlobeScene({
           />
         ))}
       </group>
-      <Particles count={particleCount} radius={4.8} opacity={0.72} size={0.05} />
+      <Particles count={particleCount > 1000 ? 700 : particleCount} radius={5} opacity={0.5} size={0.035} />
     </group>
   );
 }
