@@ -22,7 +22,9 @@ export default function Login() {
         body: JSON.stringify(form),
       });
 
-      const data = await response.json();
+      const text = await response.text();
+      console.log("RAW RESPONSE:", text);
+      const data = JSON.parse(text);
       if (!response.ok) {
         throw new Error(data?.message || "Login failed. Please check your credentials.");
       }
