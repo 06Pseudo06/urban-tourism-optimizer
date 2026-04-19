@@ -3,8 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X, Send, Loader2 } from 'lucide-react';
 import { Button } from '../button';
 import ReactMarkdown from 'react-markdown';
+import { useItinerary } from '../../../features/itinerary/hooks/useItinerary';
 
 function ChatbotWidget() {
+  const { itineraryData, setItineraryData } = useItinerary();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     { role: 'model', text: 'Hello! I am your AI travel guide. Exploring a new city or need an itinerary? Ask me anything!' }
@@ -38,7 +40,8 @@ function ChatbotWidget() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: userMessage.text,
-          history: currentHistory
+          history: currentHistory,
+          currentItinerary: itineraryData
         })
       });
 
@@ -49,6 +52,10 @@ function ChatbotWidget() {
       }
 
       setMessages((prev) => [...prev, { role: 'model', text: data.reply }]);
+      
+      if (data.updatedItinerary) {
+        setItineraryData(data.updatedItinerary);
+      }
     } catch (error) {
       console.error("Chat error:", error);
       setMessages((prev) => [...prev, { role: 'model', text: "I'm sorry, I encountered an error and couldn't process your request. Please ensure the backend is connected and the API key is configured." }]);

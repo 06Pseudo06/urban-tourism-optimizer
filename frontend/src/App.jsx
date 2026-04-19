@@ -11,6 +11,7 @@ import Login from './auth/Login.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import SavedItinerary from './pages/SavedItinerary.jsx';
 import { Navigate } from 'react-router-dom';
+import { ItineraryProvider } from './features/itinerary/context/ItineraryContext.jsx';
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = !!localStorage.getItem("authToken");
@@ -69,7 +70,9 @@ function App() {
   return (
     <ErrorBoundary>
       <BrowserRouter>
-        <AnimatedRoutes />
+        <ItineraryProvider>
+          <AnimatedRoutes />
+        </ItineraryProvider>
       </BrowserRouter>
     </ErrorBoundary>
   );
