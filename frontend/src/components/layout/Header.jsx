@@ -29,7 +29,7 @@ function Header() {
     <header className="sticky top-0 z-50 bg-gradient-to-r from-indigo-950/30 via-slate-950/60 to-cyan-950/30 border-b border-white/10 text-white backdrop-blur-xl shadow-lg transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center w-full">
         <Link to="/" className="flex items-center gap-3">
-          <img src="logo.svg" alt="Urban Tourism Optimizer logo" className="h-8 w-auto hover:opacity-90 transition-opacity" />
+          <img src="/logo.svg" alt="Urban Tourism Optimizer logo" className="h-8 w-auto hover:opacity-90 transition-opacity" />
           <span className="hidden sm:inline font-bold tracking-wide text-lg text-white">Urban Tourism Optimizer</span>
         </Link>
         <div className='flex items-center gap-4'>
