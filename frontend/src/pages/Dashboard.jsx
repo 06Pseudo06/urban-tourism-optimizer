@@ -70,7 +70,7 @@ function Dashboard() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 min-h-[80vh]">
-      <div className="flex justify-between items-end mb-10">
+      <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-10">
         <div>
           <h1 className="text-4xl sm:text-5xl font-black text-white mb-2 tracking-tight">Your Trips</h1>
           <p className="text-lg text-slate-400">View and manage your saved itineraries.</p>

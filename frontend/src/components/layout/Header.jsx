@@ -32,21 +32,21 @@ function Header() {
           <img src="/logo.svg" alt="Urban Tourism Optimizer logo" className="h-8 w-auto hover:opacity-90 transition-opacity" />
           <span className="hidden sm:inline font-bold tracking-wide text-lg text-white">Urban Tourism Optimizer</span>
         </Link>
-        <div className='flex items-center gap-4'>
+        <div className='flex items-center gap-2 sm:gap-4'>
           {location.pathname !== "/create-trip" && (
-            <Link to="/create-trip" className="primary-btn text-sm">
+            <Link to="/create-trip" className="hidden sm:inline-flex primary-btn text-sm">
               Plan Trip
             </Link>
           )}
           {isAuthenticated ? (
-            <div className="flex gap-3">
-              <Link to="/dashboard" className="secondary-btn text-sm text-white border-white/20 hover:bg-white/10">Dashboard</Link>
-              <button className="secondary-btn text-sm text-white border-white/20 hover:bg-white/10" onClick={handleLogout}>Sign out</button>
+            <div className="flex gap-2 sm:gap-3">
+              <Link to="/dashboard" className="secondary-btn text-xs sm:text-sm px-3 sm:px-4 text-white border-white/20 hover:bg-white/10">Dashboard</Link>
+              <button className="secondary-btn text-xs sm:text-sm px-3 sm:px-4 text-white border-white/20 hover:bg-white/10" onClick={handleLogout}>Sign out</button>
             </div>
           ) : (
-            <div className="flex gap-3">
-              <Link to="/login" className="secondary-btn text-sm text-white border-white/20 hover:bg-white/10">Login</Link>
-              <Link to="/sign-in" className="primary-btn text-sm text-white border-transparent">Sign in</Link>
+            <div className="flex gap-2 sm:gap-3">
+              <Link to="/login" className="secondary-btn text-xs sm:text-sm px-3 sm:px-4 text-white border-white/20 hover:bg-white/10">Login</Link>
+              <Link to="/sign-in" className="primary-btn text-xs sm:text-sm px-3 sm:px-4 text-white border-transparent">Sign in</Link>
             </div>
           )}
         </div>

@@ -52,12 +52,12 @@ export default function Landing() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.35 }}
-            className="flex flex-wrap items-center justify-center gap-6 mt-4"
+            className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center justify-center gap-4 sm:gap-6 mt-4 w-full sm:w-auto px-4 sm:px-0"
           >
-            <Link to="/create-trip" className="primary-btn px-8 py-3 text-lg h-auto shadow-lg shadow-blue-900/40">
+            <Link to="/create-trip" className="primary-btn px-8 py-3 text-lg h-auto shadow-lg shadow-blue-900/40 w-full sm:w-auto text-center">
               Start Planning
             </Link>
-            <Link to="/login" className="secondary-btn px-8 py-3 text-lg h-auto">
+            <Link to="/login" className="secondary-btn px-8 py-3 text-lg h-auto w-full sm:w-auto text-center">
               View Live Dashboard
             </Link>
           </motion.div>

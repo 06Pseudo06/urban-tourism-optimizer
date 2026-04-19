@@ -170,7 +170,7 @@ const HeroInput = ({ onSubmit }) => {
               onChange={e => setFormData({...formData, days: parseInt(e.target.value) || ''})}
             />
           </div>
-          <div className="flex gap-6">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
              <div className="flex-1">
                <label className="block text-sm font-semibold text-slate-300 mb-2">Start Date (Optional)</label>
                <input type="date" className="input-dark" value={formData.start_date} onChange={e=>setFormData({...formData, start_date: e.target.value})}/>
@@ -180,7 +180,7 @@ const HeroInput = ({ onSubmit }) => {
                <input type="date" className="input-dark" value={formData.end_date} onChange={e=>setFormData({...formData, end_date: e.target.value})}/>
              </div>
           </div>
-          <div className="flex gap-6">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
              <div className="flex-1">
                <label className="block text-sm font-semibold text-slate-300 mb-2">Daily Start Time</label>
                <input required type="time" className="input-dark" value={formData.start_time} onChange={e=>setFormData({...formData, start_time: e.target.value})}/>
@@ -256,8 +256,8 @@ const HeroInput = ({ onSubmit }) => {
               {formData.start_date && <p><strong className="text-white">Dates:</strong> <span className="text-slate-300">{formData.start_date} to {formData.end_date}</span></p>}
            </div>
 
-           <div className="flex gap-6 mt-8">
-            <button type="button" onClick={handlePrev} className="secondary-btn w-32">Back</button>
+           <div className="flex flex-col-reverse sm:flex-row gap-4 sm:gap-6 mt-8">
+            <button type="button" onClick={handlePrev} className="secondary-btn w-full sm:w-32">Back</button>
             <button type="submit" disabled={!!errorMsg || isSubmitting} className="flex-1 primary-btn disabled:opacity-50 flex items-center justify-center gap-2">
               {isSubmitting ? (
                  <>

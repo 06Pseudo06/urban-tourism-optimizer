@@ -202,7 +202,7 @@ const ItineraryDisplay = ({ itineraryData }) => {
           return (
             <div key={dayPlan?.day || dIdx}>
 
-              <div className="sticky top-4 z-20 mx-auto max-w-4xl glass-2 py-4 mb-10 px-6 flex justify-between items-center text-white">
+              <div className="sticky top-4 z-20 mx-auto max-w-4xl glass-2 py-4 mb-6 sm:mb-10 px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-white">
                 <h3 className="font-semibold text-2xl tracking-tight flex items-center gap-3">
                    <span className="bg-indigo-500 text-white w-8 h-8 text-sm rounded-lg flex items-center justify-center">
                      {dayPlan?.day || dIdx + 1}
