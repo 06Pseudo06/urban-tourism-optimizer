@@ -3,7 +3,7 @@ const { enrichPlaceWithGoogle, searchGooglePlacesText, getDistanceMatrix } = req
 const { normalizePlace } = require('../services/normalize.service');
 const stringSimilarity = require('string-similarity');
 const ItineraryHistory = require('../models/itineraryHistory.model');
-
+  
 // ─── Constants ────────────────────────────────────────────────────────────────
 const DEFAULT_START_TIME_MINS = 9 * 60;  // 09:00
 const DEFAULT_END_TIME_MINS = 21 * 60; // 21:00
@@ -69,7 +69,7 @@ const getFoodImportanceBoost = (p) => {
   if (rating >= 4.6) boost += 8;
   else if (rating >= 4.4) boost += 5;
 
-  if (name.includes('restaurant')) boost += 5;
+  if (name.includes('restaurant')) boost += 5; 
   if (name.includes('cafe') && reviews < 300) boost -= 8;
   if (reviews < 100) boost -= 5;
 

@@ -44,7 +44,7 @@ const getNormalizedCategory = (rawCategories = [], placeName = "") => {
 
   // Smart fallback
   if (
-    name.includes("beach") ||
+    name.includes("beach") ||  
     name.includes("sea") ||
     name.includes("drive") ||
     name.includes("view") ||
@@ -171,7 +171,7 @@ const buildSlotsForDay = ({ weather = {}, startTimeMins = 480, endTimeMins = 126
   // ── CASE 1: CLEAR / NORMAL ───────────────────
   const s = startTimeMins;
   return [
-    slot('breakfast', ['food'],              60,  s),
+    slot('breakfast', ['food'],              60,  s), 
     slot('landmark',  ['landmark'],          90,  s + 60),
     slot('cultural',  ['cultural'],          120, s + 60 + 90 + 15),
     slot('lunch',     ['food'],              75,  s + 60 + 90 + 15 + 120 + 15),
@@ -285,3 +285,4 @@ module.exports = {
   applyTravelPenalty,
   getMustInclude
 };
+     

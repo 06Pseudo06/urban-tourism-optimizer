@@ -8,4 +8,4 @@ const getRoutes = async (places) => {
   }));
 };
 
-module.exports = { getRoutes };
+module.exports = { getRoutes };   

@@ -18,8 +18,8 @@ app.use('/api/auth', authRoutes);
 
 app.use('/api/user', userRoutes);
 
-app.use('/api/itinerary', itineraryRoutes);
 
+app.use('/api/itinerary', itineraryRoutes);   
 app.use('/api/places', placesRoutes);
 
 app.use('/api/chat', chatRoutes);

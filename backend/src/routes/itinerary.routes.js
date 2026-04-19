@@ -6,10 +6,10 @@ const {
   saveItinerary, 
   getItineraryHistory, 
   getItineraryById 
-} = require('../controllers/itinerary.controller');
+} = require('../controllers/itinerary.controller'); 
 
 // @route POST /api/itinerary/generate-itinerary
-router.post('/generate-itinerary', generateItinerary);
+router.post('/generate-itinerary', generateItinerary); 
 
 // @route POST /api/itinerary/save
 router.post('/save', protect, saveItinerary);
@@ -20,4 +20,4 @@ router.get('/history', protect, getItineraryHistory);
 // @route GET /api/itinerary/:id
 router.get('/:id', protect, getItineraryById);
 
-module.exports = router;
+module.exports = router;   

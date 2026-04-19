@@ -114,4 +114,4 @@ const getDetailedWeatherForecast = async (lat, lon) => {
 
 module.exports = {
   getDetailedWeatherForecast
-}; 
+};     

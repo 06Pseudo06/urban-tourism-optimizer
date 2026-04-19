@@ -20,4 +20,4 @@ const getPlaces = async (city) => {
   ];
 };
 
-module.exports = { getPlaces };
+module.exports = { getPlaces };   
