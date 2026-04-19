@@ -8,6 +8,8 @@ import MainLayout from "./components/layout/MainLayout.jsx";
 import Header from "./components/layout/Header.jsx";
 import SignIn from './auth/SignIn.jsx';
 import Login from './auth/Login.jsx';
+import Dashboard from './pages/Dashboard.jsx';
+import SavedItinerary from './pages/SavedItinerary.jsx';
 import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ children }) => {
@@ -54,6 +56,8 @@ const AnimatedRoutes = () => {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<motion.div key="landing" variants={pageTransition} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3, ease: "easeOut" }}><MainLayout><Landing /></MainLayout></motion.div>} />
         <Route path="/create-trip" element={<ProtectedRoute><motion.div key="create-trip" variants={pageTransition} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3, ease: "easeOut" }}><MainLayout><Itinerary /></MainLayout></motion.div></ProtectedRoute>} />
+        <Route path="/dashboard" element={<ProtectedRoute><motion.div key="dashboard" variants={pageTransition} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3, ease: "easeOut" }}><MainLayout><Dashboard /></MainLayout></motion.div></ProtectedRoute>} />
+        <Route path="/itinerary/:id" element={<ProtectedRoute><motion.div key="saved-itinerary" variants={pageTransition} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3, ease: "easeOut" }}><MainLayout><SavedItinerary /></MainLayout></motion.div></ProtectedRoute>} />
         <Route path="/sign-in" element={<motion.div key="sign-in" variants={pageTransition} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3, ease: "easeOut" }}><MainLayout><SignIn /></MainLayout></motion.div>} />
         <Route path="/login" element={<motion.div key="login" variants={pageTransition} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3, ease: "easeOut" }}><MainLayout><Login /></MainLayout></motion.div>} />
       </Routes>

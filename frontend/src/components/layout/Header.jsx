@@ -39,7 +39,10 @@ function Header() {
             </Link>
           )}
           {isAuthenticated ? (
-            <button className="secondary-btn text-sm text-white border-white/20 hover:bg-white/10" onClick={handleLogout}>Sign out</button>
+            <div className="flex gap-3">
+              <Link to="/dashboard" className="secondary-btn text-sm text-white border-white/20 hover:bg-white/10">Dashboard</Link>
+              <button className="secondary-btn text-sm text-white border-white/20 hover:bg-white/10" onClick={handleLogout}>Sign out</button>
+            </div>
           ) : (
             <div className="flex gap-3">
               <Link to="/login" className="secondary-btn text-sm text-white border-white/20 hover:bg-white/10">Login</Link>

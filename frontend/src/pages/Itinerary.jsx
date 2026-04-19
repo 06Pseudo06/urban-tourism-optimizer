@@ -16,7 +16,31 @@ function Itinerary() {
 
   const handleGenerate = async (formData) => {
     setShowMap(false);
-    await fetchItinerary(formData);
+    try {
+      const data = await fetchItinerary(formData);
+      
+      // Async Save
+      const token = localStorage.getItem('authToken');
+      if (token && data) {
+        const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        fetch(`${API_BASE_URL}/api/itinerary/save`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            destination: formData.destination,
+            duration: formData.days || 3,
+            travel_type: formData.travel_type,
+            budget: formData.budget,
+            itinerary: data
+          })
+        }).catch(err => console.error("Silently failing save:", err));
+      }
+    } catch (err) {
+      // Handled by hook
+    }
   };
 
   return (

@@ -2,6 +2,7 @@ const { getDetailedWeatherForecast } = require('../services/weather.service');
 const { enrichPlaceWithGoogle, searchGooglePlacesText, getDistanceMatrix } = require('../services/google.service');
 const { normalizePlace } = require('../services/normalize.service');
 const stringSimilarity = require('string-similarity');
+const ItineraryHistory = require('../models/itineraryHistory.model');
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const DEFAULT_START_TIME_MINS = 9 * 60;  // 09:00
@@ -712,3 +713,98 @@ if (!geoOk || !geocodeData?.results?.length) {
 }
 
 }
+
+// ─── Save Itinerary ───────────────────────────────────────────────────────────
+exports.saveItinerary = async (req, res) => {
+  try {
+    const { destination, duration, travel_type, budget, itinerary } = req.body;
+
+    if (!destination || !itinerary) {
+      return res.status(400).json({ success: false, message: 'Missing required payload data' });
+    }
+    
+    // Size check
+    const payloadSize = Buffer.byteLength(JSON.stringify(req.body));
+    if (payloadSize > 5 * 1024 * 1024) { // 5MB limit
+      return res.status(413).json({ success: false, message: 'Payload too large' });
+    }
+
+    const title = `${duration} Days in ${destination}`;
+
+    const newItinerary = new ItineraryHistory({
+      userId: req.user._id,
+      title,
+      destination,
+      duration,
+      travelType: travel_type || 'Unknown',
+      budget: budget || 'Unknown',
+      itineraryData: itinerary
+    });
+
+    const saved = await newItinerary.save();
+    console.log(`[SYS] Itinerary saved for User:${req.user._id} Dest:${destination}`);
+
+    return res.status(201).json({
+      success: true,
+      message: 'Itinerary saved successfully',
+      data: { id: saved._id }
+    });
+  } catch (error) {
+    console.error('Save Itinerary Error:', error);
+    return res.status(500).json({ success: false, message: 'Server error saving itinerary.' });
+  }
+};
+
+// ─── Get Itinerary History (Paginated) ────────────────────────────────────────
+exports.getItineraryHistory = async (req, res) => {
+  try {
+    let { page = 1, limit = 10, destination } = req.query;
+    page = parseInt(page, 10);
+    limit = parseInt(limit, 10);
+
+    const query = { userId: req.user._id };
+    if (destination) {
+      query.destination = { $regex: destination, $options: 'i' };
+    }
+
+    const total = await ItineraryHistory.countDocuments(query);
+    const itineraries = await ItineraryHistory.find(query)
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .select('-itineraryData'); // Exclude heavy payload in listing
+
+    return res.status(200).json({
+      success: true,
+      data: itineraries,
+      pagination: {
+        total,
+        page,
+        pages: Math.ceil(total / limit)
+      }
+    });
+  } catch (error) {
+    console.error('Get Itinerary History Error:', error);
+    return res.status(500).json({ success: false, message: 'Server error fetching history.' });
+  }
+};
+
+// ─── Get Single Saved Itinerary ───────────────────────────────────────────────
+exports.getItineraryById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const itinerary = await ItineraryHistory.findOne({ _id: id, userId: req.user._id });
+
+    if (!itinerary) {
+      return res.status(404).json({ success: false, message: 'Itinerary not found' });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: itinerary
+    });
+  } catch (error) {
+    console.error('Get Itinerary By Id Error:', error);
+    return res.status(500).json({ success: false, message: 'Server error fetching itinerary.' });
+  }
+};

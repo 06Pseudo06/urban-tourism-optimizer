@@ -1,4 +1,4 @@
-import { MapPin, Clock, Star, ArrowDown, Info, Thermometer, CloudRain, Sun, Cloud } from 'lucide-react';
+import { MapPin, Clock, Star, ArrowDown, Info, Thermometer, CloudRain, Sun, Cloud, Download } from 'lucide-react';
 
 const WeatherBadge = ({ weather }) => {
   if (!weather) return <span className="text-sm font-semibold text-slate-400">Weather unavailable</span>;
@@ -140,16 +140,59 @@ const ItineraryDisplay = ({ itineraryData }) => {
     );
   }
 
+  const handleDownload = () => {
+    let content = `# Your ${duration}-Day Trip to ${destination}\n`;
+    content += `Optimized for ${travelType} on a ${budget} budget.\n\n`;
+
+    itinerary.forEach((dayPlan, dIdx) => {
+      content += `## Day ${dayPlan.day || dIdx + 1}\n\n`;
+      const places = Array.isArray(dayPlan.places) ? dayPlan.places : [];
+
+      if (places.length === 0) {
+        content += `(No places planned for this day)\n\n`;
+      } else {
+        places.forEach((place) => {
+          content += `### ${place.name || 'Unknown Place'}\n`;
+          content += `- **Time:** ${place.arrival_time || '--'} to ${place.departure_time || '--'}\n`;
+          if (place.category) content += `- **Category:** ${place.category}\n`;
+          if (place.reason) content += `- **Note:** ${place.reason}\n`;
+          if (place.rating) content += `- **Rating:** ${place.rating} / 5\n`;
+          if (place.travel_time_from_previous > 0) content += `- *Travel from previous:* ${place.travel_time_from_previous} mins\n`;
+          content += `\n`;
+        });
+      }
+      content += `---\n\n`;
+    });
+
+    const blob = new Blob([content], { type: 'text/markdown;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${destination.replace(/\\s+/g, '_')}_Itinerary.md`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="w-full mx-auto py-4 px-2 sm:px-6">
 
-      <div className="mb-12 text-center text-white">
+      <div className="mb-12 text-center text-white relative">
          <h2 className="text-4xl font-black mb-3">
            Your {duration}-Day Trip to {destination}
          </h2>
-         <p className="text-slate-300">
-           Optimized for {travelType} on a {budget} budget.
-         </p>
+         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-4">
+           <p className="text-slate-300">
+             Optimized for {travelType} on a {budget} budget.
+           </p>
+           <button 
+             onClick={handleDownload}
+             className="flex items-center gap-2 px-4 py-1.5 text-sm font-semibold rounded-lg bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 hover:bg-indigo-600/40 hover:text-white transition-all shadow-lg"
+             title="Download as Markdown"
+           >
+             <Download size={14} /> Download (.md)
+           </button>
+         </div>
       </div>
 
       <div className="space-y-16">
