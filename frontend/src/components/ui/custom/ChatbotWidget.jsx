@@ -4,6 +4,7 @@ import { MessageSquare, X, Send, Loader2 } from 'lucide-react';
 import { Button } from '../button';
 import ReactMarkdown from 'react-markdown';
 import { useItinerary } from '../../../features/itinerary/hooks/useItinerary';
+import { API_BASE_URL } from '@/config/api';
 
 function ChatbotWidget() {
   const { itineraryData, setItineraryData } = useItinerary();
@@ -35,7 +36,7 @@ function ChatbotWidget() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/chat`, {
+      const response = await fetch(`${API_BASE_URL}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

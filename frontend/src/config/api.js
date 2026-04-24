@@ -1,5 +1,6 @@
 export const API_BASE_URL =
-  import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  import.meta.env.VITE_API_URL || 
+  (import.meta.env.MODE === 'development' ? 'http://localhost:5000' : 'https://urban-tourism-optimizer.onrender.com');
 
 export const safeApiFetch = async (path, options = {}) => {
   // Safely join the URL to prevent missing or double slashes

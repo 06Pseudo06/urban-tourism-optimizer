@@ -96,10 +96,14 @@ const PlaceCard = ({ place, index, isLast }) => {
               </div>
               
               <div className="flex gap-2 flex-wrap"> 
-                <span className="text-[10px] tracking-wider font-semibold px-2 py-0.5 border border-white/10 bg-white/5 text-slate-300 rounded uppercase">
+                <span className={`text-[10px] tracking-wider font-semibold px-2 py-0.5 border border-white/10 bg-white/5 text-slate-300 rounded uppercase`}>
                   {place.category || 'POI'}
                 </span>
-                <span className="text-xs font-bold px-2 py-0.5 rounded uppercase border border-blue-500/30 bg-blue-900/40 text-blue-300">
+                <span className={`text-xs font-bold px-2 py-0.5 rounded uppercase border ${
+                  tagLabel === 'Outdoor' 
+                    ? 'border-green-500/30 bg-green-900/40 text-green-300' 
+                    : 'border-blue-500/30 bg-blue-900/40 text-blue-300'
+                }`}>
                   {tagLabel}
                 </span>
               </div>

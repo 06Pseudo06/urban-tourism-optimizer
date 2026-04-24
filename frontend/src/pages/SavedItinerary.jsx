@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import ItineraryDisplay from '../features/itinerary/components/ItineraryDisplay';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+import { API_BASE_URL } from '@/config/api';
 
 function SavedItinerary() {
   const { id } = useParams();

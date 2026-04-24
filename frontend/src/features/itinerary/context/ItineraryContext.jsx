@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useState, useMemo } from 'react';
 import { generateItinerary } from '../services/itinerary.service';
 

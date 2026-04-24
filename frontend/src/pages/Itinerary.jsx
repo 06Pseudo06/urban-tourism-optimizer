@@ -5,6 +5,7 @@ import HeroInput from '@/features/itinerary/components/HeroInput';
 import ItineraryDisplay from '@/features/itinerary/components/ItineraryDisplay';
 import MapPanel from '@/features/itinerary/components/MapPanel';
 import { useItinerary } from '@/features/itinerary/hooks/useItinerary';
+import { API_BASE_URL } from '@/config/api';
 
 function Itinerary() {
   const { itineraryData, isLoading, error, fetchItinerary, resetItinerary, setError } = useItinerary();
@@ -22,7 +23,6 @@ function Itinerary() {
       // Async Save
       const token = localStorage.getItem('authToken');
       if (token && data) {
-        const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
         fetch(`${API_BASE_URL}/api/itinerary/save`, {
           method: 'POST',
           headers: {
@@ -60,7 +60,7 @@ function Itinerary() {
 
         {isLoading && (
           <div className="w-full max-w-3xl mx-auto px-6 py-32 flex flex-col items-center justify-center space-y-6">
-            <div className="w-16 h-16 border-4 border-white/10 border-t-cyan-400 rounded-full animate-spin"></div>
+            <div className="w-16 h-16 border-4 border-solid border-white/10 border-t-cyan-400 rounded-full animate-spin flex-shrink-0"></div>
             <h3 className="text-xl font-bold text-white animate-pulse">Engineering your optimal route...</h3>
             <p className="text-slate-400 text-center max-w-sm">Checking API bounds, balancing categories, and measuring local distance metrics.</p>
           </div>

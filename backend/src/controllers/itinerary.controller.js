@@ -285,23 +285,27 @@ if (!geoOk || !geocodeData?.results?.length) {
     });
 
     const rawFeatures = geoapifyRes.features || [];
-    for (const f of rawFeatures) {
-      if (!f.properties.name) continue;
-      const key = f.properties.name.toLowerCase();
-      if (key.includes('station') || key.includes('airport') || key.includes('metro')) continue;
+    const chunkSize = 10;
+    for (let i = 0; i < rawFeatures.length; i += chunkSize) {
+      const chunk = rawFeatures.slice(i, i + chunkSize);
+      await Promise.all(chunk.map(async (f) => {
+        if (!f.properties.name) return;
+        const key = f.properties.name.toLowerCase();
+        if (key.includes('station') || key.includes('airport') || key.includes('metro')) return;
 
-      if (!mergedPlacesMap.has(key)) {
-        const geoPlace = {
-          name: f.properties.name,
-          lat: f.properties.lat,
-          lon: f.properties.lon,
-          place_id: f.properties.place_id
-        };
-        const enriched = await enrichPlaceWithGoogle(geoPlace);
-        if (enriched) {
-          mergedPlacesMap.set(key, { ...enriched, rawCategory: f.properties.categories?.[0] });
+        if (!mergedPlacesMap.has(key)) {
+          const geoPlace = {
+            name: f.properties.name,
+            lat: f.properties.lat,
+            lon: f.properties.lon,
+            place_id: f.properties.place_id
+          };
+          const enriched = await enrichPlaceWithGoogle(geoPlace);
+          if (enriched) {
+            mergedPlacesMap.set(key, { ...enriched, rawCategory: f.properties.categories?.[0] });
+          }
         }
-      }
+      }));
     }
 
     let enrichedPlaces = Array.from(mergedPlacesMap.values());
