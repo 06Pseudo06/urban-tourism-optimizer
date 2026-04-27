@@ -171,7 +171,7 @@ GEMINI_API_KEY=your_key
 
 ```bash
 # Clone repository
-git clone https://github.com/your-username/urban-tourism-optimizer.git
+git clone [(https://github.com/06Pseudo06/urban-tourism-optimizer)t]
 
 # Navigate into project
 cd urban-tourism-optimizer
